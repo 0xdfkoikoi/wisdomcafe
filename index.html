@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wisdom Cafe Menu</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffaf0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start py-6 px-2">
+
+  <!-- Navigation -->
+  <nav class="w-full max-w-md flex justify-between items-center mb-6 relative">
+    <a href="/" class="absolute left-0 text-blue-600 underline text-sm px-4">Main Page</a>
+    <h1 class="text-xl font-bold w-full text-center">Welcome to the Wisdom Cafe</h1>
+  </nav>
+
+  <!-- Book Container -->
+  <div class="relative w-full max-w-md aspect-[3/4] bg-white rounded-2xl shadow-lg overflow-hidden">
+    <img id="menuImage" src="https://raw.githubusercontent.com/0xdfkoikoi/wisdom-cafe/main/menu-page-1.jpg" alt="Menu Page 1" class="w-full h-full object-cover" />
+
+    <!-- Buttons -->
+    <div class="absolute inset-0 flex justify-between items-center px-2">
+      <button onclick="prevPage()" id="prevBtn" class="bg-white/80 rounded-full p-2 hover:bg-white" disabled>
+        <i data-lucide="chevron-left"></i>
+      </button>
+      <button onclick="nextPage()" id="nextBtn" class="bg-white/80 rounded-full p-2 hover:bg-white">
+        <i data-lucide="chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <p id="pageIndicator" class="mt-4 text-gray-600">Page 1 of 4</p>
+
+  <script>
+    lucide.createIcons();
+
+    const menuImages = [
+      'https://raw.githubusercontent.com/0xdfkoikoi/wisdom-cafe/main/menu-page-1.jpg',
+      'https://raw.githubusercontent.com/0xdfkoikoi/wisdom-cafe/main/menu-page-2.jpg',
+      'https://raw.githubusercontent.com/0xdfkoikoi/wisdom-cafe/main/menu-page-3.jpg',
+      'https://raw.githubusercontent.com/0xdfkoikoi/wisdom-cafe/main/menu-page-4.jpg'
+    ];
+
+    let currentPage = 0;
+
+    function updateMenu() {
+      document.getElementById("menuImage").src = menuImages[currentPage];
+      document.getElementById("menuImage").alt = `Menu Page ${currentPage + 1}`;
+      document.getElementById("pageIndicator").innerText = `Page ${currentPage + 1} of ${menuImages.length}`;
+      document.getElementById("prevBtn").disabled = currentPage === 0;
+      document.getElementById("nextBtn").disabled = currentPage === menuImages.length - 1;
+    }
+
+    function nextPage() {
+      if (currentPage < menuImages.length - 1) {
+        currentPage++;
+        updateMenu();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        updateMenu();
+      }
+    }
+  </script>
+</body>
+</html>
