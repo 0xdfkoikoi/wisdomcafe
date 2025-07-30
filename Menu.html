@@ -12,22 +12,22 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Open Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Open Sans', sans-serif; /* Default font for body text */
+            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+            -moz-osx-font-smoothing: grayscale; /* Smoother font rendering for Firefox */
             display: flex;
             flex-direction: column; /* Menumpuk header, main, footer secara vertikal */
             justify-content: flex-start; /* Mengatur konten ke atas */
-            min-height: 100vh;
-            background-color: #333;
-            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg'); /* Gambar latar belakang Anda */
-            background-size: cover;
-            background-position: center;
-            color: #fff;
-            position: relative;
+            min-height: 100vh; /* Full viewport height */
+            background-color: #333; /* Fallback background color */
+            
+            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
+            background-size: cover; /* Cover the entire background area */
+            background-position: center; /* Center the background image */
+            color: #fff; /* Default text color for the card */
             overflow-x: hidden; /* Mencegah scroll horizontal saat menu dibuka */
             padding: 20px; /* Padding keseluruhan untuk konten halaman */
-            box-sizing: border-box;
+            box-sizing: border-box; /* Include padding in element's total width and height */
         }
 
         .menu-container {
@@ -44,13 +44,13 @@
 
         /* Styling Kartu Header Glassmorphism */
         .glassmorphism-header-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            padding: 20px 25px;
+            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
+            border-radius: 20px; /* Rounded corners for the card */
+            backdrop-filter: blur(15px); /* The core glassmorphism blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific prefix for backdrop-filter */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow for elevated look */
+            padding: 20px 25px; /* Inner padding of the card */
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -60,24 +60,24 @@
 
         .menu-title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 2.8em;
+            font-size: 2.8em; /* Large, bold title */
             font-weight: 700;
             color: white;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 0; /* Remove default margin from h1 */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
         }
 
         .back-home-button {
             display: inline-block;
             padding: 10px 25px;
-            border-radius: 25px;
-            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 25px; /* Pill shape for buttons */
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            text-decoration: none;
+            text-decoration: none; /* Remove underline */
             font-family: 'Open Sans', sans-serif;
             font-size: 1em;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transitions on hover */
         }
 
         .back-home-button:hover {
@@ -87,12 +87,12 @@
 
         /* Gaya Khusus Slider */
         .slider-container {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
+            border-radius: 20px; /* Rounded corners for the card */
+            backdrop-filter: blur(15px); /* The core glassmorphism blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific prefix for backdrop-filter */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow for elevated look */
             position: relative;
             overflow: hidden; /* Penting untuk menyembunyikan bagian slide */
             width: 100%;
@@ -140,6 +140,12 @@
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: block; /* Hapus ruang ekstra di bawah gambar */
+            cursor: zoom-in; /* Menunjukkan bahwa gambar dapat diklik */
+            transition: transform 0.2s ease; /* Transisi untuk efek klik */
+        }
+
+        .menu-slide img:active { /* Efek saat gambar diklik/sentuh */
+            transform: scale(0.98);
         }
 
         .slide-content {
@@ -232,6 +238,92 @@
             background-color: white;
         }
 
+        /* Gaya Modal Gambar (Lightbox) */
+        .image-modal {
+            display: none; /* Sembunyikan secara default */
+            position: fixed; /* Tetap di tempat saat scroll */
+            z-index: 100; /* Letakkan di atas segalanya */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Overlay gelap */
+            backdrop-filter: blur(8px); /* Efek blur untuk glassmorphism */
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            /* align-items: center; <-- BARIS INI KITA UBAH */
+            align-items: flex-start; /* **Perbaikan:** Mulai konten dari atas */
+            transition: opacity 0.3s ease;
+            opacity: 0; /* Mulai dengan transparan */
+            pointer-events: none; /* Tidak bisa diklik saat transparan */
+            padding: 20px 0; /* Tambahkan padding vertikal di sini untuk memberi ruang dari atas/bawah viewport */
+            box-sizing: border-box; /* Pastikan padding dihitung dalam total tinggi */
+        }
+
+        .image-modal.active {
+            opacity: 1; /* Tampilkan modal */
+            pointer-events: auto; /* Bisa diklik saat aktif */
+        }
+
+        .modal-content {
+            position: relative; /* Untuk tombol tutup */
+            width: auto; /* Biarkan lebar menyesuaikan gambar */
+            height: auto; /* Biarkan tinggi menyesuaikan gambar */
+            max-width: 90vw; /* Maksimal 90% lebar viewport */
+            max-height: 100%; /* **Perbaikan:** Biarkan modal konten mengambil tinggi penuh yang tersedia (dikontrol oleh image-modal) */
+            background: rgba(255, 255, 255, 0.08); /* Background glassmorphism */
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* **Perbaikan:** Pusatkan gambar secara horizontal, tapi mulai dari atas */
+            padding: 20px; /* Padding di dalam modal */
+            box-sizing: border-box;
+            overflow: auto; /* Aktifkan scroll jika konten terlalu besar */
+        }
+
+        .modal-content img {
+            max-width: 100%; /* Gambar akan mengisi 100% lebar modal-content */
+            /* max-height: 100%; <-- BARIS INI SUDAH DIKOMENTARI/DIHAPUS SEBELUMNYA */
+            display: block;
+            border-radius: 10px;
+            object-fit: contain; /* Penting: Pastikan seluruh gambar terlihat, tanpa pemotongan */
+            width: auto; /* Biarkan dimensi alami jika lebih kecil dari modal */
+            height: auto; /* Biarkan dimensi alami jika lebih kecil dari modal */
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2); /* Glassmorphism untuk tombol */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.8em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
+            z-index: 101; /* Di atas gambar modal */
+        }
+
+        .modal-close-button:hover {
+            background-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .modal-close-button:active {
+            transform: scale(0.95);
+        }
+
         /* Penyesuaian Responsif */
         @media (max-width: 768px) {
             .menu-title {
@@ -278,6 +370,17 @@
             }
             .slider-dots {
                 bottom: 15px;
+            }
+            /* Modal di mobile */
+            .modal-content {
+                padding: 15px;
+            }
+            .modal-close-button {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 1.5em;
             }
         }
 
@@ -381,12 +484,24 @@
         </footer>
     </div>
 
+    <div id="imageModal" class="image-modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <img id="modalImage" src="" alt="Enlarged Menu Item">
+        </div>
+    </div>
+
     <script>
         const slidesWrapper = document.getElementById('slidesWrapper');
         const slides = document.querySelectorAll('.menu-slide');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const sliderDots = document.getElementById('sliderDots');
+
+        // Elemen Modal
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalCloseButton = document.querySelector('.modal-close-button');
 
         let currentIndex = 0;
         const totalSlides = slides.length;
@@ -438,13 +553,50 @@
             });
         }
 
-        // Event Listener untuk tombol
+        // Event Listener untuk tombol navigasi slider
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
 
         // Inisialisasi slider
         createDots();
         showSlide(currentIndex); // Tampilkan slide pertama saat inisialisasi
+
+        // ===========================================
+        // Fungsionalitas Modal Gambar (Lightbox)
+        // ===========================================
+
+        // Event listener untuk setiap gambar di slider
+        slides.forEach(slide => {
+            const img = slide.querySelector('img');
+            img.addEventListener('click', () => {
+                modalImage.src = img.src; // Setel sumber gambar modal
+                imageModal.classList.add('active'); // Tampilkan modal dengan transisi
+                document.body.style.overflow = 'hidden'; // Nonaktifkan scroll halaman utama
+            });
+        });
+
+        // Tutup modal saat tombol silang diklik
+        modalCloseButton.addEventListener('click', () => {
+            imageModal.classList.remove('active'); // Sembunyikan modal dengan transisi
+            document.body.style.overflow = ''; // Aktifkan kembali scroll halaman utama
+        });
+
+        // Tutup modal saat mengklik di luar gambar modal (background overlay)
+        imageModal.addEventListener('click', (event) => {
+            // Pastikan klik bukan pada gambar itu sendiri atau tombol tutup
+            if (event.target === imageModal) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Tutup modal dengan tombol ESC
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && imageModal.classList.contains('active')) {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
 
         // Opsional: Auto-slide (geser komentar untuk mengaktifkan)
         // let slideInterval = setInterval(nextSlide, 5000); // Ganti slide setiap 5 detik
