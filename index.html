@@ -1,76 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wisdom Cafe Menu</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fffaf0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature Card - Glassmorphism</title>
+    <!-- Google Fonts for Montserrat and Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        /*
+         * CSS Styling for the Glassmorphism Nature Card
+         * All styles are embedded directly in the <head> section
+         */
+
+        /* Basic Resets & Body Styling */
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif; /* Default font for body text */
+            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+            -moz-osx-font-smoothing: grayscale; /* Smoother font rendering for Firefox */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            min-height: 100vh; /* Full viewport height */
+            background-color: #333; /* Fallback background color */
+            /*
+             * Background image URL. This is a placeholder.
+             * Replace 'http://googleusercontent.com/file_content/1' with your actual image URL
+             * if you have a different one, or if this placeholder becomes invalid.
+             */
+            background-image: url('http://googleusercontent.com/file_content/1');
+            background-size: cover; /* Cover the entire background area */
+            background-position: center; /* Center the background image */
+            color: #fff; /* Default text color for the card */
+            overflow: hidden; /* Prevent body scroll if content overflows slightly */
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Some padding around the card to prevent it from touching edges */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Glassmorphism Card Styling */
+        .glassmorphism-card {
+            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
+            border-radius: 20px; /* Rounded corners for the card */
+            backdrop-filter: blur(15px); /* The core glassmorphism blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific prefix for backdrop-filter */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow for elevated look */
+            padding: 25px; /* Inner padding of the card */
+            max-width: 900px; /* Maximum width for the card */
+            width: 90%; /* Responsive width, takes 90% of parent's width */
+            display: flex;
+            flex-direction: column; /* Arrange content in a column */
+            gap: 20px; /* Space between sections (header, main, footer) */
+        }
+
+        /* Header Styling */
+        .card-header {
+            display: flex;
+            align-items: center; /* Vertically align items */
+            gap: 20px; /* Space between menu icon and text */
+            padding-bottom: 15px; /* Padding below header */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute lines evenly */
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            border-radius: 1px;
+        }
+
+        .header-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 1px; /* Spaced out letters */
+            color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+            font-weight: 600;
+        }
+
+        /* Main Content Styling (using Grid for layout) */
+        .card-content {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr; /* Two columns with fractional widths */
+            gap: 30px; /* Space between grid columns */
+            align-items: center; /* Vertically align content in grid cells */
+        }
+
+        .left-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.1); /* Slight dark background behind image */
+            border-radius: 15px; /* Match card radius for inner elements */
+            overflow: hidden; /* Important for border-radius on image */
+            padding: 10px; /* Padding inside the image container */
+        }
+
+        .content-image {
+            max-width: 100%; /* Ensure image fits its container */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove extra space below image */
+            border-radius: 10px; /* Slightly rounded corners for the image itself */
+        }
+
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between title and description */
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5em; /* Large, bold title */
+            font-weight: 700;
+            line-height: 1.1; /* Tighter line spacing for multi-line title */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
+            margin: 0; /* Remove default margin from h1 */
+            color: white;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px; /* Space below subtitle */
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .description-text {
+            font-size: 0.9em;
+            line-height: 1.6; /* Comfortable line spacing for readability */
+            color: rgba(255, 255, 255, 0.7); /* Slightly transparent text */
+        }
+
+        /* Footer Styling */
+        .card-footer {
+            display: flex;
+            align-items: center; /* Vertically align items */
+            gap: 15px; /* Space between footer elements */
+            padding-top: 15px; /* Padding above footer */
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+        }
+
+        .footer-text {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.6);
+            flex-shrink: 0; /* Prevent text from shrinking on smaller screens */
+        }
+
+        .footer-button {
+            padding: 8px 18px;
+            border-radius: 20px; /* Pill shape for buttons */
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85em;
+            cursor: pointer; /* Indicate it's clickable */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions on hover */
+            white-space: nowrap; /* Prevent button text from wrapping */
+        }
+
+        .outline-button {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .outline-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .filled-button {
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .filled-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .card-content {
+                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+                text-align: center; /* Center text when stacked */
+            }
+
+            .left-section {
+                padding: 5px; /* Reduce padding for image container */
+            }
+
+            .main-title {
+                font-size: 2.5em; /* Adjust font size for smaller screens */
+            }
+
+            .footer-text {
+                display: none; /* Hide 'Connect with nature' on small screens if space is tight */
+            }
+
+            .card-footer {
+                justify-content: center; /* Center buttons if text is hidden */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glassmorphism-card {
+                padding: 15px; /* Reduce overall card padding */
+            }
+
+            .card-header {
+                gap: 10px;
+                flex-direction: column; /* Stack header elements (menu icon and text) */
+                align-items: flex-start; /* Align header items to the start */
+            }
+
+            .footer-button {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start py-6 px-2">
+<body>
+    <div class="container">
+        <div class="glassmorphism-card">
+            <header class="card-header">
+                <div class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="header-text">ABOUT LIFE AND PLANTS</div>
+            </header>
 
-  <!-- Navigation -->
-  <nav class="w-full max-w-md flex justify-between items-center mb-6 relative">
-    <a href="/" class="absolute left-0 text-blue-600 underline text-sm px-4">Main Page</a>
-    <h1 class="text-xl font-bold w-full text-center">Welcome to the Wisdom Cafe</h1>
-  </nav>
+            <main class="card-content">
+                <div class="left-section">
+                    <!-- Placeholder image. Replace with your actual image URL. -->
+                    <img src="https://via.placeholder.com/250x350/508D4E/FFFFFF?text=Green+Plant" alt="Green Plant" class="content-image">
+                </div>
+                <div class="right-section">
+                    <h1 class="main-title">Enjoy<br>Nature</h1>
+                    <div class="description-section">
+                        <h2 class="subtitle">Green hosts</h2>
+                        <p class="description-text">Hosta is an extremely resilient plant that can survive in a variety of conditions, from full shade to full sun. In some countries, such as Japan and Korea, young hosta leaves are harvested and used for food.</p>
+                    </div>
+                </div>
+            </main>
 
-  <!-- Book Container -->
-  <div class="relative w-full max-w-md aspect-[3/4] bg-white rounded-2xl shadow-lg overflow-hidden">
-    <img id="menuImage" src="https://github.com/0xdfkoikoi/wisdomcafe/blob/main/img/JADI1.jpg" alt="Menu Page 1" class="w-full h-full object-cover" />
-
-    <!-- Buttons -->
-    <div class="absolute inset-0 flex justify-between items-center px-2">
-      <button onclick="prevPage()" id="prevBtn" class="bg-white/80 rounded-full p-2 hover:bg-white" disabled>
-        <i data-lucide="chevron-left"></i>
-      </button>
-      <button onclick="nextPage()" id="nextBtn" class="bg-white/80 rounded-full p-2 hover:bg-white">
-        <i data-lucide="chevron-right"></i>
-      </button>
+            <footer class="card-footer">
+                <div class="footer-text">Connect with nature</div>
+                <button class="footer-button outline-button">types of host</button>
+                <button class="footer-button filled-button">Gallery</button>
+            </footer>
+        </div>
     </div>
-  </div>
-
-  <p id="pageIndicator" class="mt-4 text-gray-600">Page 1 of 4</p>
-
-  <script>
-    lucide.createIcons();
-
-    const menuImages = [
-      'https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI1.jpg',
-      'https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI2.jpg',
-      'https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI3.jpg',
-      'https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI4.jpg'
-    ];
-
-    let currentPage = 0;
-
-    function updateMenu() {
-      document.getElementById("menuImage").src = menuImages[currentPage];
-      document.getElementById("menuImage").alt = `Menu Page ${currentPage + 1}`;
-      document.getElementById("pageIndicator").innerText = `Page ${currentPage + 1} of ${menuImages.length}`;
-      document.getElementById("prevBtn").disabled = currentPage === 0;
-      document.getElementById("nextBtn").disabled = currentPage === menuImages.length - 1;
-    }
-
-    function nextPage() {
-      if (currentPage < menuImages.length - 1) {
-        currentPage++;
-        updateMenu();
-      }
-    }
-
-    function prevPage() {
-      if (currentPage > 0) {
-        currentPage--;
-        updateMenu();
-      }
-    }
-  </script>
 </body>
 </html>
