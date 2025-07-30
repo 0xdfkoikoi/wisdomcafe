@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nature Card - Glassmorphism</title>
-    <!-- Google Fonts for Montserrat and Open Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
 
     <style>
-        
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif; /* Default font for body text */
@@ -22,12 +20,12 @@
             align-items: center; /* Center content vertically */
             min-height: 100vh; /* Full viewport height */
             background-color: #333; /* Fallback background color */
-            
             background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
             background-size: cover; /* Cover the entire background area */
             background-position: center; /* Center the background image */
             color: #fff; /* Default text color for the card */
-            /* Removed overflow: hidden; to allow scrolling on mobile */
+            position: relative; /* Added for positioning of overlay/menu */
+            overflow-x: hidden; /* Prevent horizontal scroll when menu is open */
         }
 
         .container {
@@ -54,6 +52,8 @@
             display: flex;
             flex-direction: column; /* Arrange content in a column */
             gap: 20px; /* Space between sections (header, main, footer) */
+            z-index: 1; /* Ensure card is above menu overlay */
+            position: relative; /* For z-index to work */
         }
 
         /* Header Styling */
@@ -65,13 +65,23 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
         }
 
+        .menu-toggle { /* Changed from .nav-link to .menu-toggle */
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Inherit color from parent */
+            display: flex; /* Allow menu icon and text to be side-by-side */
+            align-items: center;
+            gap: 20px;
+            cursor: pointer; /* Indicate it's clickable */
+            user-select: none; /* Prevent text selection on icon/text */
+        }
+
         .menu-icon {
             width: 24px;
             height: 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between; /* Distribute lines evenly */
-            cursor: pointer; /* Indicate it's clickable */
+            /* Removed cursor: pointer; as it's on .menu-toggle now */
         }
 
         .menu-icon span {
@@ -80,7 +90,20 @@
             height: 2px;
             background-color: white;
             border-radius: 1px;
+            transition: all 0.3s ease; /* Smooth transition for icon animation */
         }
+
+        /* Animation for hamburger to 'X' */
+        .menu-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .menu-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
 
         .header-text {
             font-family: 'Montserrat', sans-serif;
@@ -88,6 +111,72 @@
             letter-spacing: 1px; /* Spaced out letters */
             color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
             font-weight: 600;
+        }
+
+        /* Navigation Menu Styling */
+        .side-nav {
+            height: 100%;
+            width: 0; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 10; /* Sit on top of everything */
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+            padding-top: 60px; /* Place content 60px from the top */
+            backdrop-filter: blur(10px); /* Glassmorphism effect for the menu */
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .side-nav.open {
+            width: 250px; /* When open, set a specific width */
+        }
+
+        .side-nav a {
+            padding: 15px 25px 15px 35px; /* Top, Right, Bottom, Left padding */
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #818181; /* Default link color */
+            display: block; /* Make links appear below each other */
+            transition: 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .side-nav a:hover {
+            color: #f1f1f1;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .side-nav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Overlay for when menu is open */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+            z-index: 5; /* Below the menu, above the card */
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .overlay.active {
+            display: block; /* Show when active */
+            opacity: 1;
         }
 
         /* Main Content Styling (using Grid for layout) */
@@ -106,8 +195,6 @@
             border-radius: 15px; /* Match card radius for inner elements */
             overflow: hidden; /* Important for border-radius on image */
             padding: 10px; /* Padding inside the image container */
-            /* Ensure no blur filter is applied here */
-            /* filter: none; or remove any filter property if present */
         }
 
         .content-image {
@@ -115,8 +202,6 @@
             height: auto; /* Maintain aspect ratio */
             display: block; /* Remove extra space below image */
             border-radius: 10px; /* Slightly rounded corners for the image itself */
-            /* Ensure no blur filter is applied here */
-            /* filter: none; or remove any filter property if present */
         }
 
         .right-section {
@@ -172,6 +257,8 @@
             cursor: pointer; /* Indicate it's clickable */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions on hover */
             white-space: nowrap; /* Prevent button text from wrapping */
+            text-decoration: none; /* Remove underline for links styled as buttons */
+            display: inline-block; /* Allow padding and sizing for links */
         }
 
         .outline-button {
@@ -218,6 +305,10 @@
             .card-footer {
                 justify-content: center; /* Center buttons if text is hidden */
             }
+
+            .side-nav.open {
+                width: 100%; /* Full width on very small screens */
+            }
         }
 
         @media (max-width: 480px) {
@@ -227,8 +318,14 @@
 
             .card-header {
                 gap: 10px;
-                flex-direction: column; /* Stack header elements (menu icon and text) */
+                /* flex-direction: column; /* Stack header elements (menu icon and text) - removed to keep them inline */
                 align-items: flex-start; /* Align header items to the start */
+            }
+            
+            .menu-toggle {
+                flex-direction: row; /* Keep menu icon and text in a row within the link */
+                align-items: center;
+                gap: 10px;
             }
 
             .footer-button {
@@ -239,20 +336,32 @@
     </style>
 </head>
 <body>
+    <div id="menuOverlay" class="overlay"></div>
+
+    <div id="mySidenav" class="side-nav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="types-of-host.html">Types of Host</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+
     <div class="container">
         <div class="glassmorphism-card">
             <header class="card-header">
-                <div class="menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="menu-toggle" onclick="toggleNav()">
+                    <div class="menu-icon" id="menuIcon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="header-text">WELCOME TO DeWisdom CAFE</div>
                 </div>
-                <div class="header-text">WELCOME TO DeWisdom CAFE</div>
             </header>
 
             <main class="card-content">
                 <div class="left-section">
-                    <!-- Placeholder image. Replace with your actual image URL. -->
                     <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Green Plant" class="content-image">
                 </div>
                 <div class="right-section">
@@ -266,10 +375,40 @@
 
             <footer class="card-footer">
                 <div class="footer-text">Connect with nature</div>
-                <button class="footer-button outline-button">types of host</button>
-                <button class="footer-button filled-button">Gallery</button>
+                <a href="types-of-host.html" class="footer-button outline-button">types of host</a>
+                <a href="gallery.html" class="footer-button filled-button">Gallery</a>
             </footer>
         </div>
     </div>
+
+    <script>
+        function toggleNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var overlay = document.getElementById("menuOverlay");
+            var menuIcon = document.getElementById("menuIcon");
+
+            if (sidenav.classList.contains("open")) {
+                sidenav.classList.remove("open");
+                overlay.classList.remove("active");
+                menuIcon.classList.remove("open"); // Reset hamburger icon
+            } else {
+                sidenav.classList.add("open");
+                overlay.classList.add("active");
+                menuIcon.classList.add("open"); // Animate hamburger to 'X'
+            }
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").classList.remove("open");
+            document.getElementById("menuOverlay").classList.remove("active");
+            document.getElementById("menuIcon").classList.remove("open"); // Reset hamburger icon
+        }
+
+        // Close nav when clicking outside on the overlay
+        document.getElementById("menuOverlay").onclick = function() {
+            closeNav();
+        };
+
+    </script>
 </body>
 </html>
