@@ -121,24 +121,25 @@
             z-index: 10; /* Sit on top of everything */
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+            /* Changed background for blur effect */
+            background-color: rgba(255, 255, 255, 0.08); /* Semi-transparent white background, consistent with card */
+            backdrop-filter: blur(15px); /* Apply the blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific */
+            border-right: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
             overflow-x: hidden; /* Disable horizontal scroll */
             transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
             padding-top: 60px; /* Place content 60px from the top */
-            backdrop-filter: blur(10px); /* Glassmorphism effect for the menu */
-            -webkit-backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .side-nav.open {
-            width: 250px; /* When open, set a specific width */
+            width: 250px; /* When open, set a specific width for larger screens */
         }
 
         .side-nav a {
             padding: 15px 25px 15px 35px; /* Top, Right, Bottom, Left padding */
             text-decoration: none;
             font-size: 1.2em;
-            color: #818181; /* Default link color */
+            color: #f1f1f1; /* Changed to a lighter color for visibility on blurry background */
             display: block; /* Make links appear below each other */
             transition: 0.3s;
             font-family: 'Montserrat', sans-serif;
@@ -146,8 +147,8 @@
         }
 
         .side-nav a:hover {
-            color: #f1f1f1;
-            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff; /* White on hover */
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque on hover */
         }
 
         .side-nav .closebtn {
@@ -306,8 +307,9 @@
                 justify-content: center; /* Center buttons if text is hidden */
             }
 
+            /* Mobile-specific adjustments for side navigation */
             .side-nav.open {
-                width: 100%; /* Full width on very small screens */
+                width: 70%; /* Open to 70% width on mobile, instead of 100% */
             }
         }
 
@@ -318,7 +320,6 @@
 
             .card-header {
                 gap: 10px;
-                /* flex-direction: column; /* Stack header elements (menu icon and text) - removed to keep them inline */
                 align-items: flex-start; /* Align header items to the start */
             }
             
@@ -332,6 +333,10 @@
                 padding: 6px 12px;
                 font-size: 0.8em;
             }
+
+            .side-nav.open {
+                width: 75%; /* Slightly more width for very small screens */
+            }
         }
     </style>
 </head>
@@ -341,7 +346,7 @@
     <div id="mySidenav" class="side-nav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="#">Home</a>
-        <a href="types-of-host.html">Types of Host</a>
+        <a href="Menu.html">Lihat Menu</a>
         <a href="gallery.html">Gallery</a>
         <a href="#">About Us</a>
         <a href="#">Contact</a>
