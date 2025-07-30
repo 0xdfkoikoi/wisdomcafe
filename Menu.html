@@ -3,291 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nature Card - Glassmorphism</title>
+    <title>Our Menu - DeWisdom CAFE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
 
     <style>
-        
         body {
             margin: 0;
-            font-family: 'Open Sans', sans-serif; /* Default font for body text */
-            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
-            -moz-osx-font-smoothing: grayscale; /* Smoother font rendering for Firefox */
-            display: flex;
-            justify-content: center; /* Center content horizontally */
-            align-items: center; /* Center content vertically */
-            min-height: 100vh; /* Full viewport height */
-            background-color: #333; /* Fallback background color */
-            
-            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
-            background-size: cover; /* Cover the entire background area */
-            background-position: center; /* Center the background image */
-            color: #fff; /* Default text color for the card */
-            /* Removed overflow: hidden; to allow scrolling on mobile */
-        }
-
-        .container {
-            width: 100%;
-            height: 100%; /* Changed to min-height to allow content to push it larger if needed */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px; /* Some padding around the card to prevent it from touching edges */
-            box-sizing: border-box; /* Include padding in element's total width and height */
-        }
-
-        /* Glassmorphism Card Styling */
-        .glassmorphism-card {
-            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
-            border-radius: 20px; /* Rounded corners for the card */
-            backdrop-filter: blur(15px); /* The core glassmorphism blur effect */
-            -webkit-backdrop-filter: blur(15px); /* Safari specific prefix for backdrop-filter */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow for elevated look */
-            padding: 25px; /* Inner padding of the card */
-            max-width: 900px; /* Maximum width for the card */
-            width: 90%; /* Responsive width, takes 90% of parent's width */
-            display: flex;
-            flex-direction: column; /* Arrange content in a column */
-            gap: 20px; /* Space between sections (header, main, footer) */
-        }
-
-        /* Header Styling */
-        .card-header {
-            display: flex;
-            align-items: center; /* Vertically align items */
-            gap: 20px; /* Space between menu icon and text */
-            padding-bottom: 15px; /* Padding below header */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
-        }
-
-        /* Added for navigation link styling */
-        .nav-link {
-            text-decoration: none; /* Remove underline from link */
-            color: inherit; /* Inherit color from parent */
-            display: flex; /* Allow menu icon and text to be side-by-side */
-            align-items: center;
-            gap: 20px;
-        }
-
-        .menu-icon {
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Distribute lines evenly */
-            cursor: pointer; /* Indicate it's clickable */
-        }
-
-        .menu-icon span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: white;
-            border-radius: 1px;
-        }
-
-        .header-text {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9em;
-            letter-spacing: 1px; /* Spaced out letters */
-            color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
-            font-weight: 600;
-        }
-
-        /* Main Content Styling (using Grid for layout) */
-        .card-content {
-            display: grid;
-            grid-template-columns: 0.7fr 1.3fr; /* Two columns with fractional widths */
-            gap: 30px; /* Space between grid columns */
-            align-items: center; /* Vertically align content in grid cells */
-        }
-
-        .left-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.1); /* Slight dark background behind image */
-            border-radius: 15px; /* Match card radius for inner elements */
-            overflow: hidden; /* Important for border-radius on image */
-            padding: 10px; /* Padding inside the image container */
-            /* Ensure no blur filter is applied here */
-            /* filter: none; or remove any filter property if present */
-        }
-
-        .content-image {
-            max-width: 100%; /* Ensure image fits its container */
-            height: auto; /* Maintain aspect ratio */
-            display: block; /* Remove extra space below image */
-            border-radius: 10px; /* Slightly rounded corners for the image itself */
-            /* Ensure no blur filter is applied here */
-            /* filter: none; or remove any filter property if present */
-        }
-
-        .right-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px; /* Space between title and description */
-        }
-
-        .main-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3.5em; /* Large, bold title */
-            font-weight: 700;
-            line-height: 1.1; /* Tighter line spacing for multi-line title */
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
-            margin: 0; /* Remove default margin from h1 */
-            color: white;
-        }
-
-        .subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 10px; /* Space below subtitle */
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .description-text {
-            font-size: 0.9em;
-            line-height: 1.6; /* Comfortable line spacing for readability */
-            color: rgba(255, 255, 255, 0.7); /* Slightly transparent text */
-        }
-
-        /* Footer Styling */
-        .card-footer {
-            display: flex;
-            align-items: center; /* Vertically align items */
-            gap: 15px; /* Space between footer elements */
-            padding-top: 15px; /* Padding above footer */
-            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
-        }
-
-        .footer-text {
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.6);
-            flex-shrink: 0; /* Prevent text from shrinking on smaller screens */
-        }
-
-        .footer-button {
-            padding: 8px 18px;
-            border-radius: 20px; /* Pill shape for buttons */
             font-family: 'Open Sans', sans-serif;
-            font-size: 0.85em;
-            cursor: pointer; /* Indicate it's clickable */
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions on hover */
-            white-space: nowrap; /* Prevent button text from wrapping */
-            text-decoration: none; /* Remove underline for links styled as buttons */
-            display: inline-block; /* Allow padding and sizing for links */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column; /* Menumpuk header, main, footer secara vertikal */
+            justify-content: flex-start; /* Mengatur konten ke atas */
+            min-height: 100vh;
+            background-color: #333;
+            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg'); /* Gambar latar belakang Anda */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden; /* Mencegah scroll horizontal saat menu dibuka */
+            padding: 20px; /* Padding keseluruhan untuk konten halaman */
+            box-sizing: border-box;
         }
 
-        .outline-button {
-            background-color: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: rgba(255, 255, 255, 0.8);
+        .menu-container {
+            width: 100%;
+            max-width: 1000px; /* Lebar maksimal untuk konten menu secara keseluruhan */
+            margin: 0 auto; /* Pusatkan kontainer */
+            padding: 20px;
+            box-sizing: border-box;
+            flex-grow: 1; /* Memungkinkan konten utama mengambil ruang yang tersedia */
+            display: flex; /* Menggunakan flex untuk mengatur header, slider, footer */
+            flex-direction: column;
+            gap: 30px; /* Jarak antara bagian */
         }
 
-        .outline-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.6);
+        /* Styling Kartu Header Glassmorphism */
+        .glassmorphism-header-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            padding: 20px 25px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
-        .filled-button {
-            background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
+        .menu-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-home-button {
+            display: inline-block;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1em;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
-        .filled-button:hover {
+        .back-home-button:hover {
             background-color: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Responsive adjustments for smaller screens */
+        /* Gaya Khusus Slider */
+        .slider-container {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden; /* Penting untuk menyembunyikan bagian slide */
+            width: 100%;
+            padding: 25px; /* Padding dalam kartu slider */
+            box-sizing: border-box;
+            display: flex; /* Menggunakan flex untuk mengatur item jika diperlukan */
+            align-items: center; /* Pusatkan konten secara vertikal jika ada ruang ekstra */
+            min-height: 500px; /* Tinggi minimum untuk slider, sesuaikan sesuai kebutuhan */
+            justify-content: center;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: 100%; /* Akan dikontrol oleh JS untuk gerakan horizontal */
+            transition: transform 0.6s ease-in-out; /* Transisi slide yang mulus */
+            height: 100%; /* Mengambil tinggi penuh dari padding-box slider-container */
+        }
+
+        .menu-slide {
+            flex: 0 0 100%; /* Setiap slide mengambil 100% lebar area yang terlihat */
+            display: flex;
+            flex-direction: row; /* Default: gambar kiri, teks kanan */
+            align-items: center; /* Sejajarkan gambar dan teks secara vertikal */
+            justify-content: center;
+            gap: 30px;
+            text-align: center; /* Perataan teks default */
+            padding: 0 15px; /* Padding untuk konten di dalam slide */
+            box-sizing: border-box;
+        }
+
+        .slide-image-wrapper {
+            flex: 1; /* Memungkinkan wrapper gambar untuk tumbuh */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 40%; /* Sesuaikan lebar bagian gambar */
+        }
+
+        .menu-slide img {
+            max-width: 100%;
+            max-height: 400px; /* Batasi tinggi gambar agar pas dalam viewport tipikal */
+            width: auto; /* Pertahankan rasio aspek */
+            height: auto; /* Pertahankan rasio aspek */
+            object-fit: contain; /* Pastikan seluruh gambar terlihat, tanpa pemotongan */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: block; /* Hapus ruang ekstra di bawah gambar */
+        }
+
+        .slide-content {
+            flex: 1; /* Memungkinkan bagian konten untuk tumbuh */
+            max-width: 60%; /* Sesuaikan lebar bagian konten */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Sejajarkan teks ke kiri di area konten */
+            text-align: left; /* Sejajarkan teks ke kiri */
+        }
+
+        .menu-slide-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: white;
+            margin-top: 0;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .menu-slide-description {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .menu-slide-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #a7f3d0; /* Warna hijau yang enak untuk harga */
+            margin-top: auto; /* Mendorong harga ke bawah jika deskripsi bervariasi panjangnya */
+        }
+
+        .slider-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+            z-index: 2; /* Di atas slide */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .slider-nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        #prevBtn {
+            left: 15px;
+        }
+
+        #nextBtn {
+            right: 15px;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: white;
+        }
+
+        /* Penyesuaian Responsif */
         @media (max-width: 768px) {
-            .card-content {
-                grid-template-columns: 1fr; /* Stack columns on smaller screens */
-                text-align: center; /* Center text when stacked */
+            .menu-title {
+                font-size: 2em;
             }
-
-            .left-section {
-                padding: 5px; /* Reduce padding for image container */
+            .slider-container {
+                min-height: 400px; /* Sesuaikan tinggi minimum untuk mobile */
+                padding: 15px;
             }
-
-            .main-title {
-                font-size: 2.5em; /* Adjust font size for smaller screens */
+            .menu-slide {
+                flex-direction: column; /* Menumpuk gambar dan teks di mobile */
+                gap: 20px;
             }
-
-            .footer-text {
-                display: none; /* Hide 'Connect with nature' on small screens if space is tight */
+            .slide-image-wrapper {
+                max-width: 80%; /* Gambar bisa mengambil lebar lebih banyak saat ditumpuk */
             }
-
-            .card-footer {
-                justify-content: center; /* Center buttons if text is hidden */
+            .menu-slide img {
+                max-height: 250px; /* Tinggi maksimal yang lebih kecil untuk gambar potret di mobile */
+            }
+            .slide-content {
+                max-width: 95%; /* Konten bisa mengambil lebar lebih banyak */
+                align-items: center; /* Pusatkan teks saat ditumpuk */
+                text-align: center; /* Pusatkan teks saat ditumpuk */
+            }
+            .menu-slide-title {
+                font-size: 1.8em;
+            }
+            .menu-slide-description {
+                font-size: 0.9em;
+            }
+            .menu-slide-price {
+                font-size: 1.5em;
+            }
+            .slider-nav-button {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2em;
+            }
+            #prevBtn {
+                left: 10px;
+            }
+            #nextBtn {
+                right: 10px;
+            }
+            .slider-dots {
+                bottom: 15px;
             }
         }
 
         @media (max-width: 480px) {
-            .glassmorphism-card {
-                padding: 15px; /* Reduce overall card padding */
+            body {
+                padding: 10px;
             }
-
-            .card-header {
-                gap: 10px;
-                flex-direction: column; /* Stack header elements (menu icon and text) */
-                align-items: flex-start; /* Align header items to the start */
+            .menu-container {
+                padding: 10px;
+                gap: 20px;
             }
-            
-            /* Adjust nav-link for smaller screens if stacked header elements affect it */
-            .nav-link {
-                flex-direction: row; /* Keep menu icon and text in a row within the link */
-                align-items: center;
-                gap: 10px;
+            .glassmorphism-header-card {
+                padding: 15px;
             }
-
-            .footer-button {
-                padding: 6px 12px;
-                font-size: 0.8em;
+            .menu-title {
+                font-size: 1.5em;
+            }
+            .back-home-button {
+                padding: 8px 18px;
+                font-size: 0.85em;
+            }
+            .slider-container {
+                min-height: 350px;
+                padding: 10px;
+            }
+            .menu-slide img {
+                max-height: 200px; /* Tinggi maksimal yang lebih kecil lagi untuk layar sangat kecil */
+            }
+            .menu-slide-title {
+                font-size: 1.5em;
+            }
+            .menu-slide-price {
+                font-size: 1.3em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="glassmorphism-card">
-            <header class="card-header">
-                <a href="navbar.html" class="nav-link">
-                    <div class="menu-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="header-text">WELCOME TO DeWisdom CAFE</div>
-                </a>
-            </header>
+    <div class="menu-container">
+        <header class="glassmorphism-header-card">
+            <h1 class="menu-title">Our Delicious Menu</h1>
+            <a href="index.html" class="back-home-button">← Back to Home</a>
+        </header>
 
-            <main class="card-content">
-                <div class="left-section">
-                    <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Green Plant" class="content-image">
-                </div>
-                <div class="right-section">
-                    <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
-                    <div class="description-section">
-                        <h2 class="subtitle">Wisdom Cafe is more than just a coffee</h2>
-                        <p class="description-text">Each cup is brewed not just for taste, but to stir the senses and awaken gentle reflection. Here, time slows down, and conversations flow like poetry, rich with meaning and warmth. Whether you're nestled by the window with a book, lost in thought with a latte, or exchanging quiet laughter under the soft glow of lanterns, Wisdom Cafe invites you to pause, breathe, and reconnect with yourself.</p>
+        <main class="slider-container">
+            <div class="slides-wrapper" id="slidesWrapper">
+                <div class="menu-slide">
+                    <div class="slide-image-wrapper">
+                        <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI1.jpg" alt="Specialty Coffee">
+                    </div>
+                    <div class="slide-content">
+                        <h3 class="menu-slide-title">Espresso Bliss</h3>
+                        <p class="menu-slide-description">Espresso kaya dan aromatik, dibuat dari biji kopi pilihan premium untuk rasa yang dalam dan memuaskan. Sempurna untuk dorongan energi atau momen kenikmatan murni.</p>
+                        <span class="menu-slide-price">IDR 35.000</span>
                     </div>
                 </div>
-            </main>
 
-            <footer class="card-footer">
-                <div class="footer-text">Connect with nature</div>
-                <a href="types-of-host.html" class="footer-button outline-button">types of host</a>
-                <a href="gallery.html" class="footer-button filled-button">Gallery</a>
-            </footer>
-        </div>
+                <div class="menu-slide">
+                    <div class="slide-image-wrapper">
+                        <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI2.jpg" alt="Fluffy Croissant">
+                    </div>
+                    <div class="slide-content">
+                        <h3 class="menu-slide-title">Fluffy Croissant</h3>
+                        <p class="menu-slide-description">Croissant renyah, berlapis mentega, baru dipanggang dengan sempurna. Teman yang menyenangkan untuk kopi Anda, tersedia polos atau dengan isian cokelat.</p>
+                        <span class="menu-slide-price">IDR 25.000</span>
+                    </div>
+                </div>
+
+                <div class="menu-slide">
+                    <div class="slide-image-wrapper">
+                        <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI3.jpg" alt="Avocado Toast">
+                    </div>
+                    <div class="slide-content">
+                        <h3 class="menu-slide-title">Avocado Smash Toast</h3>
+                        <p class="menu-slide-description">Olesan alpukat creamy di atas roti sourdough panggang, diberi topping tomat ceri segar, taburan feta, dan sedikit serpihan cabai.</p>
+                        <span class="menu-slide-price">IDR 55.000</span>
+                    </div>
+                </div>
+
+                <div class="menu-slide">
+                    <div class="slide-image-wrapper">
+                        <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/JADI4.jpg" alt="Velvet Cheesecake">
+                    </div>
+                    <div class="slide-content">
+                        <h3 class="menu-slide-title">Velvet Cheesecake</h3>
+                        <p class="menu-slide-description">Manjakan diri Anda dengan cheesecake kami yang lembut dan creamy, dengan dasar renyah dan sentuhan akhir yang kaya dan sedikit asam. Sajian manis yang sempurna.</p>
+                        <span class="menu-slide-price">IDR 45.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-nav-button" id="prevBtn">❮</div>
+            <div class="slider-nav-button" id="nextBtn">❯</div>
+
+            <div class="slider-dots" id="sliderDots">
+                </div>
+        </main>
+
+        <footer style="text-align: center; margin-top: 40px; font-size: 0.8em; color: rgba(255, 255, 255, 0.6);">
+            <p>&copy; 2025 DeWisdom CAFE. All rights reserved.</p>
+        </footer>
     </div>
+
+    <script>
+        const slidesWrapper = document.getElementById('slidesWrapper');
+        const slides = document.querySelectorAll('.menu-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const sliderDots = document.getElementById('sliderDots');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+
+        // Fungsi untuk menampilkan slide tertentu
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = totalSlides - 1; // Kembali ke slide terakhir
+            } else if (index >= totalSlides) {
+                currentIndex = 0; // Kembali ke slide pertama
+            } else {
+                currentIndex = index;
+            }
+            slidesWrapper.style.transform = `translateX(${-currentIndex * 100}%)`;
+            updateDots();
+        }
+
+        // Fungsi untuk navigasi
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        // Membuat titik-titik secara dinamis
+        function createDots() {
+            sliderDots.innerHTML = ''; // Bersihkan titik-titik yang ada
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => showSlide(i));
+                sliderDots.appendChild(dot);
+            }
+            updateDots();
+        }
+
+        // Memperbarui titik aktif
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Event Listener untuk tombol
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Inisialisasi slider
+        createDots();
+        showSlide(currentIndex); // Tampilkan slide pertama saat inisialisasi
+
+        // Opsional: Auto-slide (geser komentar untuk mengaktifkan)
+        // let slideInterval = setInterval(nextSlide, 5000); // Ganti slide setiap 5 detik
+
+        // Hentikan auto-slide saat interaksi pengguna (opsional, tapi UX yang baik)
+        // const sliderContainer = document.querySelector('.slider-container');
+        // sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        // sliderContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
+    </script>
 </body>
 </html>
