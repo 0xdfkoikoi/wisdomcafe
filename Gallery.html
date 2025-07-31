@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyage - Discover Your Next Adventure</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for the background and slider effects */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f0eb; /* Light peach background as seen in the video */
+            overflow: hidden; /* Hide scrollbars due to background effect */
+        }
+
+        /* Main content area with a darker background and blurred effect */
+        .main-content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-color: #1a1a1a; /* Dark background for the main section */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Dynamic background image with blur and transition */
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px); /* Blurred background effect */
+            opacity: 0.6; /* Slightly transparent */
+            transition: background-image 0.5s ease-in-out, filter 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            z-index: 0; /* Behind other content */
+        }
+
+        /* Navigation bar styling */
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4rem; /* Padding for the navbar */
+            color: white;
+            z-index: 10;
+        }
+
+        .navbar-links a {
+            margin-left: 2.5rem; /* Spacing between nav links */
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: #a0aec0; /* Lighter grey on hover */
+        }
+        
+        /* Carousel container */
+        .carousel-container {
+            position: relative;
+            width: 80%; /* Adjust width as needed */
+            max-width: 1200px;
+            height: 60%; /* Adjust height as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px; /* For 3D effect */
+            z-index: 5;
+            margin-top: 5rem; /* Space from navbar */
+        }
+
+        /* Carousel track for sliding items */
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s ease-in-out;
+            transform-style: preserve-3d; /* Enable 3D transformations */
+        }
+
+        /* Individual carousel item (card) */
+        .carousel-item {
+            flex-shrink: 0;
+            width: 280px; /* Fixed width for each card */
+            height: 400px; /* Fixed height for each card */
+            margin: 0 1rem; /* Spacing between cards */
+            background-color: white;
+            border-radius: 1.5rem; /* Rounded corners */
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, box-shadow 0.3s ease;
+            transform: scale(0.8) translateY(0); /* Default smaller size */
+            opacity: 0.7; /* Default transparency */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Align content to bottom */
+            position: relative;
+            cursor: pointer; /* Indicate clickable item */
+        }
+
+        /* Active carousel item styling */
+        .carousel-item.active {
+            transform: scale(1) translateY(-20px); /* Larger and slightly lifted */
+            opacity: 1; /* Fully opaque */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* More prominent shadow */
+            z-index: 2; /* Bring active item to front */
+        }
+
+        /* Image inside the carousel item */
+        .carousel-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the card area */
+            border-radius: 1.5rem; /* Match card border-radius */
+        }
+
+        /* Content overlay on the carousel item */
+        .carousel-item-content {
+            position: relative;
+            z-index: 1; /* Above the image */
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); /* Gradient overlay */
+            padding: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .carousel-item-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-item-content p {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Navigation arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 6; /* Above carousel items */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-arrow:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-arrow.left {
+            left: 10%; /* Position left arrow */
+        }
+
+        .nav-arrow.right {
+            right: 10%; /* Position right arrow */
+        }
+
+        /* LLM Feature Styling */
+        .llm-feature-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            z-index: 5;
+        }
+
+        .llm-button {
+            background-color: #4CAF50; /* Green button */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .llm-button:hover {
+            background-color: #45a049;
+        }
+
+        .llm-result {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            max-width: 600px;
+            text-align: center;
+            min-height: 50px; /* Ensure visibility even when empty */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .llm-result.show {
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 1.5rem 2rem;
+            }
+            .navbar-links a {
+                margin-left: 1.5rem;
+            }
+            .carousel-container {
+                width: 90%;
+            }
+            .nav-arrow.left {
+                left: 5%;
+            }
+            .nav-arrow.right {
+                right: 5%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+            }
+            .navbar-links {
+                margin-top: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+            .navbar-links a {
+                margin: 0.5rem 1rem;
+            }
+            .carousel-container {
+                width: 95%;
+                height: 50%;
+                margin-top: 8rem;
+            }
+            .carousel-item {
+                width: 250px;
+                height: 350px;
+                margin: 0 0.75rem;
+            }
+            .nav-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2rem;
+            }
+            .nav-arrow.left {
+                left: 2%;
+            }
+            .nav-arrow.right {
+                right: 2%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.75rem;
+            }
+            .navbar-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .navbar-links a {
+                margin: 0.3rem 0;
+            }
+            .carousel-container {
+                width: 100%;
+                height: 45%;
+                margin-top: 10rem;
+            }
+            .carousel-item {
+                width: 200px;
+                height: 300px;
+                margin: 0 0.5rem;
+            }
+            .nav-arrow {
+                display: none; /* Hide arrows on very small screens, consider swipe */
+            }
+            .carousel-item-content h3 {
+                font-size: 1.2rem;
+            }
+            .carousel-item-content p {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main content area with dynamic background -->
+    <div class="main-content">
+        <!-- Dynamic background image element -->
+        <div id="backgroundImage" class="background-image"></div>
+
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="text-2xl font-bold">Voyage</div>
+            <!-- Navigation Links -->
+            <div class="navbar-links">
+                <a href="destinations.html" class="hover:text-gray-400">Destinations</a>
+                <a href="trip-types.html" class="hover:text-gray-400">Trip Types</a>
+                <a href="get-inspired.html" class="hover:text-gray-400">Get Inspired</a>
+                <a href="special-offers.html" class="hover:text-gray-400">Special Offers</a>
+            </div>
+        </nav>
+
+        <!-- Carousel Container -->
+        <div class="carousel-container">
+            <!-- Left Navigation Arrow -->
+            <button id="prevBtn" class="nav-arrow left">&#10094;</button>
+
+            <!-- Carousel Track holding all items -->
+            <div id="carouselTrack" class="carousel-track">
+                <!-- Carousel Item 1: Machu Picchu -->
+                <div class="carousel-item" data-bg-image="https://raw.githubusercontent.com/your-username/your-repo/main/machu-picchu.jpg" data-page="machu-picchu.html">
+                    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/machu-picchu.jpg" alt="Machu Picchu">
+                    <div class="carousel-item-content">
+                        <h3>MACHU PICCHU - PERU</h3>
+                        <p>Adventure is never far away</p>
+                    </div>
+                </div>
+
+                <!-- Carousel Item 2: Chamonix -->
+                <div class="carousel-item" data-bg-image="https://raw.githubusercontent.com/your-username/your-repo/main/chamonix.jpg" data-page="chamonix.html">
+                    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/chamonix.jpg" alt="Chamonix">
+                    <div class="carousel-item-content">
+                        <h3>CHAMONIX - FRANCE</h3>
+                        <p>Let your dreams come true</p>
+                    </div>
+                </div>
+
+                <!-- Carousel Item 3: Mimisa Rocks -->
+                <div class="carousel-item" data-bg-image="https://raw.githubusercontent.com/your-username/your-repo/main/mimisa-rocks.jpg" data-page="mimisa-rocks.html">
+                    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/mimisa-rocks.jpg" alt="Mimisa Rocks">
+                    <div class="carousel-item-content">
+                        <h3>MIMISA ROCKS - AUSTRALIA</h3>
+                        <p>A piece of heaven</p>
+                    </div>
+                </div>
+
+                <!-- Carousel Item 4: Santorini -->
+                <div class="carousel-item" data-bg-image="https://raw.githubusercontent.com/your-username/your-repo/main/santorini.jpg" data-page="santorini.html">
+                    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/santorini.jpg" alt="Santorini">
+                    <div class="carousel-item-content">
+                        <h3>SANTORINI - GREECE</h3>
+                        <p>Experience the magic</p>
+                    </div>
+                </div>
+
+                <!-- Carousel Item 5: Fjords -->
+                <div class="carousel-item" data-bg-image="https://raw.githubusercontent.com/your-username/your-repo/main/fjords.jpg" data-page="fjords.html">
+                    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/fjords.jpg" alt="Fjords">
+                    <div class="carousel-item-content">
+                        <h3>NORWEGIAN FJORDS</h3>
+                        <p>Nature's masterpiece</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Navigation Arrow -->
+            <button id="nextBtn" class="nav-arrow right">&#10095;</button>
+        </div>
+
+        <!-- LLM Feature: Generate Fact Button and Result Display -->
+        <div class="llm-feature-container">
+            <button id="generateFactBtn" class="llm-button">Generate Travel Fact</button>
+            <div id="llmResult" class="llm-result"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for the interactive carousel functionality
+
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselItems = Array.from(document.querySelectorAll('.carousel-item'));
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const backgroundImage = document.getElementById('backgroundImage');
+        const generateFactBtn = document.getElementById('generateFactBtn');
+        const llmResult = document.getElementById('llmResult');
+
+        let currentIndex = 0; // Tracks the currently active slide index
+
+        /**
+         * Updates the carousel's position and active state.
+         * Also updates the background image based on the active slide.
+         */
+        function updateCarousel() {
+            // Remove 'active' class from all items
+            carouselItems.forEach(item => item.classList.remove('active'));
+
+            // Add 'active' class to the current item
+            carouselItems[currentIndex].classList.add('active');
+
+            // Calculate the offset needed to center the active item
+            // This involves the width of an item and the margin, adjusted for centering
+            const itemWidth = carouselItems[0].offsetWidth;
+            const itemMargin = parseFloat(getComputedStyle(carouselItems[0]).marginRight) * 2; // Total horizontal margin
+            const itemFullWidth = itemWidth + itemMargin;
+
+            // Get the center point of the carousel container relative to its left edge
+            const containerCenter = carouselTrack.parentElement.offsetWidth / 2;
+
+            // Calculate the translation needed to bring the current item's center to the container's center
+            let currentItemCenterOffset = 0;
+            for (let i = 0; i < currentIndex; i++) {
+                currentItemCenterOffset += carouselItems[i].offsetWidth + itemMargin;
+            }
+            currentItemCenterOffset += carouselItems[currentIndex].offsetWidth / 2;
+
+            const translateX = containerCenter - currentItemCenterOffset;
+
+            carouselTrack.style.transform = `translateX(${translateX}px)`;
+
+            // Update background image
+            const activeBgImage = carouselItems[currentIndex].dataset.bgImage;
+            if (activeBgImage) {
+                backgroundImage.style.backgroundImage = `url('${activeBgImage}')`;
+            }
+
+            // Clear previous LLM result when carousel changes
+            llmResult.classList.remove('show');
+            llmResult.innerHTML = '';
+        }
+
+        /**
+         * Handles the click event for the 'Next' button.
+         * Increments the currentIndex and wraps around if it exceeds the number of items.
+         */
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % carouselItems.length;
+            updateCarousel();
+        });
+
+        /**
+         * Handles the click event for the 'Previous' button.
+         * Decrements the currentIndex and wraps around if it goes below zero.
+         */
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+            updateCarousel();
+        });
+
+        // Add click listener to each carousel item for navigation
+        carouselItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // If the clicked item is already the active one, navigate
+                if (item.classList.contains('active')) {
+                    const targetPage = item.dataset.page;
+                    if (targetPage) {
+                        window.location.href = targetPage;
+                    }
+                } else {
+                    // If a non-active item is clicked, make it active
+                    const clickedIndex = carouselItems.indexOf(item);
+                    if (clickedIndex !== -1) {
+                        currentIndex = clickedIndex;
+                        updateCarousel();
+                    }
+                }
+            });
+        });
+
+        /**
+         * Calls the Gemini API to generate a travel fact.
+         * Implements exponential backoff for retries.
+         */
+        async function generateTravelFact(destination, retries = 3, delay = 1000) {
+            llmResult.innerHTML = '<div class="loading-spinner"></div>'; // Show loading spinner
+            llmResult.classList.add('show');
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: `Give me one interesting travel fact about ${destination}. Keep it concise, around 1-2 sentences.` }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Leave as-is, Canvas will provide it at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    if (response.status === 429 && retries > 0) { // Too Many Requests
+                        console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+                        await new Promise(res => setTimeout(res, delay));
+                        return generateTravelFact(destination, retries - 1, delay * 2); // Exponential backoff
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    llmResult.innerHTML = text; // Display the fact
+                } else {
+                    llmResult.innerHTML = 'Could not generate a fact. Please try again.';
+                    console.error('Unexpected API response structure:', result);
+                }
+            } catch (error) {
+                llmResult.innerHTML = 'Error generating fact. Please try again.';
+                console.error('Error calling Gemini API:', error);
+            }
+        }
+
+        // Event listener for the "Generate Travel Fact" button
+        generateFactBtn.addEventListener('click', () => {
+            const activeItem = carouselItems[currentIndex];
+            const destination = activeItem.querySelector('h3').textContent.replace(' - ', ', ').replace(' - ', ', ').trim(); // Extract destination name
+            generateTravelFact(destination);
+        });
+
+        // Initial update to set the first item as active and load its background
+        updateCarousel();
+
+        // Optional: Add keyboard navigation (left/right arrow keys)
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                nextBtn.click();
+            } else if (event.key === 'ArrowLeft') {
+                prevBtn.click();
+            }
+        });
+
+        // Optional: Add touch/swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carouselTrack.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        carouselTrack.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].clientX;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            if (touchEndX < touchStartX - 50) { // Swiped left
+                nextBtn.click();
+            }
+            if (touchEndX > touchStartX + 50) { // Swiped right
+                prevBtn.click();
+            }
+        }
+
+        // Adjust carousel on window resize to maintain centering
+        window.addEventListener('resize', updateCarousel);
+    </script>
+</body>
+</html>
