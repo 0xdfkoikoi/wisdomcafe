@@ -323,6 +323,108 @@
         .modal-close-button:active {
             transform: scale(0.95);
         }
+        
+        /* Gaya Carousel Baru dari test.html */
+        .new-carousel-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 400px;
+            gap: 20px;
+        }
+
+        .carousel-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 30vh; /* Sesuaikan tinggi agar tidak terlalu besar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 10vw;
+            max-width: 200px;
+            transition: transform 0.5s ease, filter 0.5s ease, opacity 0.5s ease;
+            cursor: grab;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .blur {
+            filter: blur(2px);
+            transform: scale(0.8);
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        .highlight {
+            filter: none;
+            transform: scale(1);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .info {
+            background: rgba(255, 255, 255, 0.1); /* Glassmorphism style for the info box */
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            width: 85%;
+            max-width: 400px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .info h2 {
+            margin: 5px 0;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            color: #a7f3d0;
+        }
 
         /* Penyesuaian Responsif */
         @media (max-width: 768px) {
@@ -382,6 +484,17 @@
                 height: 35px;
                 font-size: 1.5em;
             }
+            /* New carousel responsive adjustments */
+            .carousel-item {
+                width: 60vw;
+                max-width: none;
+            }
+            .info h2 {
+                font-size: 1rem;
+            }
+            .info p {
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -416,6 +529,7 @@
                 font-size: 1.3em;
             }
         }
+        
     </style>
 </head>
 <body>
@@ -478,6 +592,27 @@
             <div class="slider-dots" id="sliderDots">
                 </div>
         </main>
+        
+        <!-- === NEW SECTION: Drink Carousel === -->
+        <section class="new-carousel-card">
+            <h2 class="carousel-title">Our Refreshing Drinks</h2>
+            <div class="carousel" id="drinkCarousel">
+                <div class="carousel-item" data-price="$5" data-title="Mocha Frappe" data-desc="A rich chocolate coffee delight.">
+                    <img src="https://raw.githubusercontent.com/tukangwarung/menuwisdomtest/main/s1.png" />
+                </div>
+                <div class="carousel-item" data-price="$6" data-title="Caramel Latte" data-desc="Smooth espresso with caramel sweetness.">
+                    <img src="https://raw.githubusercontent.com/tukangwarung/menuwisdomtest/main/s2.png" />
+                </div>
+                <div class="carousel-item" data-price="$4" data-title="Iced Americano" data-desc="Refreshing espresso over ice.">
+                    <img src="https://raw.githubusercontent.com/tukangwarung/menuwisdomtest/main/s3.png" />
+                </div>
+            </div>
+            <div class="info" id="drinkInfo">
+                <div class="price"></div>
+                <h2></h2>
+                <p></p>
+            </div>
+        </section>
 
         <footer style="text-align: center; margin-top: 40px; font-size: 0.8em; color: rgba(255, 255, 255, 0.6);">
             <p>&copy; 2025 DeWisdom CAFE. All rights reserved.</p>
@@ -492,6 +627,7 @@
     </div>
 
     <script>
+        // === SCRIPT FOR FIRST CAROUSEL ===
         const slidesWrapper = document.getElementById('slidesWrapper');
         const slides = document.querySelectorAll('.menu-slide');
         const prevBtn = document.getElementById('prevBtn');
@@ -561,11 +697,7 @@
         createDots();
         showSlide(currentIndex); // Tampilkan slide pertama saat inisialisasi
 
-        // ===========================================
         // Fungsionalitas Modal Gambar (Lightbox)
-        // ===========================================
-
-        // Event listener untuk setiap gambar di slider
         slides.forEach(slide => {
             const img = slide.querySelector('img');
             img.addEventListener('click', () => {
@@ -605,6 +737,70 @@
         // const sliderContainer = document.querySelector('.slider-container');
         // sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
         // sliderContainer.addEventListener('mouseleave', () => slideInterval = setInterval(nextSlide, 5000));
+        
+        // === SCRIPT FOR NEW DRINK CAROUSEL ===
+        const newCarousel = document.getElementById('drinkCarousel');
+        const newItems = Array.from(newCarousel.querySelectorAll('.carousel-item'));
+        const newInfoBox = document.getElementById('drinkInfo');
+        let newCurrentIndex = 1;
+
+        // Function to update the new carousel display
+        function updateNewCarousel() {
+            const itemWidth = newItems[0].offsetWidth; // No extra padding in this carousel
+            newItems.forEach((item, index) => {
+                const offset = (index - newCurrentIndex) * itemWidth;
+                item.style.transform = `translateX(${offset}px)`;
+                if (index === newCurrentIndex) {
+                    item.classList.add('highlight');
+                    item.classList.remove('blur');
+                } else {
+                    item.classList.add('blur');
+                    item.classList.remove('highlight');
+                }
+            });
+
+            const activeItem = newItems[newCurrentIndex];
+            newInfoBox.querySelector('.price').textContent = activeItem.dataset.price;
+            newInfoBox.querySelector('h2').textContent = activeItem.dataset.title;
+            newInfoBox.querySelector('p').textContent = activeItem.dataset.desc;
+        }
+
+        // Function to handle swipe/click for new carousel
+        function swipeNewCarousel(direction) {
+            if (direction === 'left') {
+                newCurrentIndex = (newCurrentIndex + 1) % newItems.length;
+            } else if (direction === 'right') {
+                newCurrentIndex = (newCurrentIndex - 1 + newItems.length) % newItems.length;
+            }
+            updateNewCarousel();
+        }
+
+        // Event listeners for new carousel swipe gestures
+        let startX = 0;
+        newCarousel.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+        });
+        newCarousel.addEventListener('touchend', e => {
+            const endX = e.changedTouches[0].clientX;
+            if (endX < startX - 50) swipeNewCarousel('left');
+            if (endX > startX + 50) swipeNewCarousel('right');
+        });
+
+        // Event listeners for new carousel mouse drag
+        newCarousel.addEventListener('mousedown', e => {
+            startX = e.clientX;
+        });
+        newCarousel.addEventListener('mouseup', e => {
+            const endX = e.clientX;
+            if (endX < startX - 50) swipeNewCarousel('left');
+            if (endX > startX + 50) swipeNewCarousel('right');
+        });
+
+        // Update on window resize for new carousel
+        window.addEventListener('resize', updateNewCarousel);
+
+        // Initial update for the new carousel
+        updateNewCarousel();
     </script>
 </body>
 </html>
