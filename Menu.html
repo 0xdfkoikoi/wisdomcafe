@@ -373,9 +373,9 @@
         
         .carousel-item {
             flex-shrink: 0;
-            width: 150px; /* Reduced width for closer spacing */
+            width: 150px;
             padding: 0 5px;
-            margin: 0 10px; /* Adjusted margin for spacing */
+            margin: 0 10px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -491,14 +491,14 @@
             }
             /* New carousel responsive adjustments */
             .carousel-item {
-                width: 130px; /* Adjusted width for smaller screens */
-                margin: 0 8px;
+                width: 150px; /* Increased width for smaller tablets */
+                margin: 0 10px;
             }
             .info h2 {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
             .info p {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
         }
 
@@ -534,8 +534,14 @@
                 font-size: 1.3em;
             }
             .carousel-item {
-                width: 100px; /* Adjusted width for mobile */
-                margin: 0 6px;
+                width: 140px; /* Increased width for mobile phones */
+                margin: 0 10px;
+            }
+            .info h2 {
+                font-size: 1.1rem;
+            }
+            .info p {
+                font-size: 0.85rem;
             }
         }
         
@@ -644,7 +650,7 @@
         </section>
 
         <footer style="text-align: center; margin-top: 40px; font-size: 0.8em; color: rgba(255, 255, 255, 0.6);">
-            <p>&copy; 2025 DeWisdom CAFE. Developed by TOKO GANGAN.</p>
+            <p>&copy; 2025 DeWisdom CAFE. All rights reserved.</p>
         </footer>
     </div>
 
@@ -781,7 +787,8 @@
 
         // Function to center the current item in the carousel
         function centerNewCarousel() {
-            const itemWidth = newItems[newCurrentIndex].offsetWidth + 20; // Item width + margin
+            const item = newItems[newCurrentIndex];
+            const itemWidth = item.offsetWidth + parseFloat(window.getComputedStyle(item).marginRight) * 2;
             const containerWidth = newCarouselContainer.offsetWidth;
             const centerOffset = (containerWidth / 2) - (itemWidth / 2);
             
