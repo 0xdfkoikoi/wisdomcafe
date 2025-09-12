@@ -1,611 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeWisdom Cafe</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Open Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #333;
-            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
-            background-size: cover;
-            background-position: center;
-            color: #fff;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .glassmorphism-card {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            padding: 25px;
-            max-width: 900px;
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 1;
-            position: relative;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .menu-toggle {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .menu-icon {
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .menu-icon span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: white;
-            border-radius: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .menu-icon.open span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
-        }
-        .menu-icon.open span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-icon.open span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
-        }
-
-        .header-text {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 600;
-        }
-
-        .side-nav {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 10;
-            top: 0;
-            left: 0;
-            background-color: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .side-nav.open {
-            width: 250px;
-        }
-
-        .side-nav a {
-            padding: 15px 25px 15px 35px;
-            text-decoration: none;
-            font-size: 1.2em;
-            color: #f1f1f1;
-            display: block;
-            transition: 0.3s;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-        }
-
-        .side-nav a:hover {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .side-nav .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 5;
-            display: none;
-            transition: opacity 0.3s ease;
-            opacity: 0;
-        }
-
-        .overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .card-content {
-            display: grid;
-            grid-template-columns: 0.7fr 1.3fr;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .left-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            padding: 10px;
-        }
-
-        .content-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 10px;
-        }
-
-        .right-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .main-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3.5em;
-            font-weight: 700;
-            line-height: 1.1;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            margin: 0;
-            color: white;
-        }
-
-        .subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2em;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .description-text {
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-text {
-            font-size: 0.85em;
-            color: rgba(255, 255, 255, 0.6);
-            flex-shrink: 0;
-        }
-
-        .footer-button {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 0.85em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            white-space: nowrap;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .outline-button {
-            background-color: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .outline-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.6);
-        }
-
-        .filled-button {
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .filled-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Assistant Section */
-        .assistant-section {
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .chat-box {
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(0, 0, 0, 0.15);
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.9em;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-message {
-            margin-bottom: 8px;
-            line-height: 1.4;
-            padding: 8px 12px;
-            border-radius: 10px;
-            max-width: 80%;
-        }
-
-        .chat-message.user {
-            background: rgba(255, 255, 255, 0.15);
-            align-self: flex-end;
-            text-align: right;
-            color: #ffd27f;
-        }
-
-        .chat-message.ai {
-            background: rgba(255, 255, 255, 0.05);
-            align-self: flex-start;
-            text-align: left;
-            color: #ffffff;
-        }
-
-        .chat-input-container {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-input-container input {
-            flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .chat-input-container button {
-            padding: 10px 16px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        .chat-input-container button:hover {
-            background-color: rgba(255, 255, 255, 0.35);
-        }
-
-        @media (max-width: 768px) {
-            .card-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .left-section {
-                padding: 5px;
-            }
-
-            .main-title {
-                font-size: 2.5em;
-            }
-
-            .footer-text {
-                display: none;
-            }
-
-            .card-footer {
-                justify-content: center;
-            }
-
-            .side-nav.open {
-                width: 70%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .glassmorphism-card {
-                padding: 15px;
-            }
-
-            .card-header {
-                gap: 10px;
-                align-items: flex-start;
-            }
-
-            .menu-toggle {
-                flex-direction: row;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .footer-button {
-                padding: 6px 12px;
-                font-size: 0.8em;
-            }
-
-            .side-nav.open {
-                width: 75%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeWisdom Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #333;
+      background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+    }
+    .container { width: 100%; padding: 20px; display: flex; justify-content: center; }
+    .glassmorphism-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      padding: 25px;
+      max-width: 900px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card-header { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1em; }
+    .card-content { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 30px; align-items: center; }
+    .content-image { max-width: 100%; border-radius: 10px; }
+    .main-title { font-family: 'Montserrat', sans-serif; font-size: 3.5em; font-weight: 700; margin: 0; }
+    .subtitle { font-family: 'Montserrat', sans-serif; font-size: 1.2em; font-weight: 600; margin-bottom: 10px; }
+    .description-text { font-size: 0.9em; line-height: 1.6; color: rgba(255,255,255,0.8); }
+    .assistant-section {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-box { max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.15); padding: 12px; border-radius: 12px; font-size: 0.9em; display: flex; flex-direction: column; }
+    .chat-message { margin-bottom: 8px; padding: 8px 12px; border-radius: 10px; max-width: 80%; }
+    .chat-message.user { background: rgba(255,255,255,0.2); align-self: flex-end; color: #ffd27f; }
+    .chat-message.ai { background: rgba(255,255,255,0.1); align-self: flex-start; }
+    .chat-input-container { display: flex; gap: 8px; }
+    .chat-input-container input { flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.2); color: white; }
+    .chat-input-container button { padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; background: rgba(255,255,255,0.2); color: white; font-weight: bold; }
+    .chat-input-container button:hover { background: rgba(255,255,255,0.35); }
+    .card-footer { display: flex; gap: 15px; margin-top: 10px; }
+    .footer-button { padding: 8px 18px; border-radius: 20px; font-size: 0.85em; text-decoration: none; }
+    .outline-button { border: 1px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); }
+    .filled-button { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; }
+  </style>
 </head>
 <body>
-    <div id="menuOverlay" class="overlay"></div>
-
-    <div id="mySidenav" class="side-nav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Home</a>
-        <a href="Menu.html">Lihat Menu</a>
-        <a href="https://www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==">Gallery</a>
-        <a href="#">About Us</a>
-        <a href="https://wa.me/6283143087159">Contact</a>
-    </div>
-
-    <div class="container">
-        <div class="glassmorphism-card">
-            <header class="card-header">
-                <div class="menu-toggle" onclick="toggleNav()">
-                    <div class="menu-icon" id="menuIcon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="header-text">WELCOME TO DeWISDOM CAFE</div>
-                </div>
-            </header>
-
-            <main class="card-content">
-                <div class="left-section">
-                    <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Green Plant" class="content-image">
-                </div>
-                <div class="right-section">
-                    <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
-                    <div class="description-section">
-                        <h2 class="subtitle">Wisdom Cafe is more than just a coffee</h2>
-                        <p class="description-text">Each cup is brewed not just for taste, but to stir the senses and awaken gentle reflection. Here, time slows down, and conversations flow like poetry, rich with meaning and warmth. Whether you're nestled by the window with a book, lost in thought with a latte, or exchanging quiet laughter under the soft glow of lanterns, Wisdom Cafe invites you to pause, breathe, and reconnect with yourself.</p>
-                    </div>
-                </div>
-            </main>
-
-            <!-- Cafe Assistant Section -->
-            <section class="assistant-section">
-                <h3 class="subtitle">Tanya Domba Wisdom Cafe Assistant 🐑☕</h3>
-                <div id="chat-box" class="chat-box">
-                    <div class="chat-message ai">Hai, saya Asisten Wisdom Cafe. Tanya saja tentang menu, kopi, atau reservasi ✨</div>
-                </div>
-                <div class="chat-input-container">
-                    <input type="text" id="user-input" placeholder="Tulis pesan Anda..." />
-                    <button id="send-button">Send</button>
-                </div>
-            </section>
-
-            <footer class="card-footer">
-                <div class="footer-text">Connect with nature</div>
-                <a href="Menu.html" class="footer-button outline-button">Lihat Menu</a>
-                <a href="www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==" class="footer-button filled-button">Gallery</a>
-            </footer>
+  <div class="container">
+    <div class="glassmorphism-card">
+      <header class="card-header">WELCOME TO DeWISDOM CAFE</header>
+      <main class="card-content">
+        <div>
+          <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Wisdom Cafe Logo" class="content-image">
         </div>
+        <div>
+          <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
+          <h2 class="subtitle">Wisdom Cafe is more than just a coffee</h2>
+          <p class="description-text">Each cup is brewed not just for taste, but to stir the senses and awaken gentle reflection. Here, time slows down, and conversations flow like poetry, rich with meaning and warmth. Whether you're nestled by the window with a book, lost in thought with a latte, or exchanging quiet laughter under the soft glow of lanterns, Wisdom Cafe invites you to pause, breathe, and reconnect with yourself.</p>
+        </div>
+      </main>
+      <section class="assistant-section">
+        <h3 class="subtitle">Tanya Domba Wisdom Cafe Assistant 🐑☕</h3>
+        <div id="chat-box" class="chat-box">
+          <div class="chat-message ai">Hai, saya Asisten Wisdom Cafe. Tanya tentang menu, kopi, atau reservasi ✨</div>
+        </div>
+        <div class="chat-input-container">
+          <input type="text" id="user-input" placeholder="Tulis pesan Anda...">
+          <button id="send-button">Send</button>
+        </div>
+      </section>
+      <footer class="card-footer">
+        <a href="Menu.html" class="footer-button outline-button">Lihat Menu</a>
+        <a href="https://www.instagram.com/wisatadombagarut" class="footer-button filled-button">Gallery</a>
+      </footer>
     </div>
+  </div>
 
-    <script>
-        function toggleNav() {
-            var sidenav = document.getElementById("mySidenav");
-            var overlay = document.getElementById("menuOverlay");
-            var menuIcon = document.getElementById("menuIcon");
+  <script src="https://js.puter.com/v2/"></script>
+  <script>
+    document.getElementById("send-button").addEventListener("click", sendMessage);
+    document.getElementById("user-input").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
 
-            if (sidenav.classList.contains("open")) {
-                sidenav.classList.remove("open");
-                overlay.classList.remove("active");
-                menuIcon.classList.remove("open"); // Reset hamburger icon
-            } else {
-                sidenav.classList.add("open");
-                overlay.classList.add("active");
-                menuIcon.classList.add("open"); // Animate hamburger to 'X'
-            }
-        }
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+      const msg = input.value.trim();
+      if (!msg) return;
 
-        function closeNav() {
-            document.getElementById("mySidenav").classList.remove("open");
-            document.getElementById("menuOverlay").classList.remove("active");
-            document.getElementById("menuIcon").classList.remove("open"); // Reset hamburger icon
-        }
+      const userDiv = document.createElement("div");
+      userDiv.className = "chat-message user";
+      userDiv.textContent = msg;
+      chatBox.appendChild(userDiv);
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-        // Close nav when clicking outside on the overlay
-        document.getElementById("menuOverlay").onclick = function() {
-            closeNav();
-        };
+      const aiDiv = document.createElement("div");
+      aiDiv.className = "chat-message ai";
+      aiDiv.textContent = "...";
+      chatBox.appendChild(aiDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-        // Attach event listeners after the DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            const sendButton = document.getElementById("send-button");
-            const userInput = document.getElementById("user-input");
-
-            if (sendButton) {
-                sendButton.addEventListener('click', sendMessage);
-            }
-
-            if (userInput) {
-                userInput.addEventListener("keypress", (event) => {
-                    if (event.key === "Enter") {
-                        event.preventDefault();
-                        sendMessage();
-                    }
-                });
-            }
-        });
-
-        async function sendMessage() {
-            const userInputEl = document.getElementById("user-input");
-            const chatBox = document.getElementById("chat-box");
-            const userMessage = userInputEl.value.trim();
-
-            if (!userMessage) return;
-
-            // Show user message
-            const userDiv = document.createElement("div");
-            userDiv.className = "chat-message user";
-            userDiv.textContent = userMessage;
-            chatBox.appendChild(userDiv);
-
-            userInputEl.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Show loading placeholder
-            const loadingDiv = document.createElement("div");
-            loadingDiv.className = "chat-message ai";
-            loadingDiv.textContent = "Domba sedang memikirkan jawaban...";
-            chatBox.appendChild(loadingDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // If Puter.js is available, use it. Otherwise fallback to local canned responses.
-            if (window.puter && puter.ai && typeof puter.ai.chat === 'function') {
-                try {
-                    const response = await puter.ai.chat(userMessage);
-                    // try to extract a sensible text from the response
-                    let text = '';
-                    if (typeof response === 'string') text = response;
-                    else if (response?.output) text = response.output;
-                    else if (response?.choices && response.choices[0]) text = response.choices[0].text || JSON.stringify(response);
-                    else text = JSON.stringify(response);
-
-                    loadingDiv.textContent = text;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                } catch (err) {
-                    loadingDiv.textContent = 'Maaf, terjadi kesalahan saat menghubungi Puter.js.';
-                    console.error(err);
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
-
-                return;
-            }
-
-            // Fallback: Hard-coded responses for a local demo (keeps original behavior)
-            const responses = {
-                "menu": "Tentu! Kami menawarkan berbagai jenis kopi, teh, dan makanan ringan. Spesial kami adalah kopi Domba Arabika, yang berasal dari perkebunan lokal.",
-                "kopi": "Kopi andalan kami adalah Domba Arabika, dengan cita rasa unik dan aroma yang kuat. Kami juga punya Latte, Cappuccino, dan Espresso.",
-                "reservasi": "Untuk reservasi, silakan hubungi kami melalui WhatsApp di nomor 083143087159. Kami akan dengan senang hati membantu Anda.",
-                "jam operasional": "Kami buka setiap hari dari pukul 09:00 pagi hingga 21:00 malam. Kami tunggu kedatangan Anda!",
-                "lainnya": "Maaf, saya hanya bisa membantu pertanyaan terkait menu, kopi, atau reservasi kafe."
-            };
-
-            const lowerCaseMessage = userMessage.toLowerCase();
-            let aiResponse = responses["lainnya"];
-
-            if (lowerCaseMessage.includes("menu")) {
-                aiResponse = responses["menu"];
-            } else if (lowerCaseMessage.includes("kopi")) {
-                aiResponse = responses["kopi"];
-            } else if (lowerCaseMessage.includes("reservasi") || lowerCaseMessage.includes("pesan tempat")) {
-                aiResponse = responses["reservasi"];
-            } else if (lowerCaseMessage.includes("jam")) {
-                aiResponse = responses["jam operasional"];
-            }
-
-            // Simulate a network delay for the fallback
-            setTimeout(() => {
-                loadingDiv.textContent = aiResponse;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 800);
-        }
-    </script>
-
-    <!-- Puter.js script from the official docs (no API key required for basic usage). -->
-    <!-- Docs: https://docs.puter.com/getting-started/ -->
-    <script src="https://js.puter.com/v2/"></script>
-
-    <!-- Optional: if you want to run additional initialization when puter loads, you can add it here. -->
-    <script>
-        // Example: set up a friendly system prompt / persona (this is optional)
-        // If Puter supports a chat initializer, you can adjust it here. The code below is safe-guarded
-        // so it will not break your page if the API changes—it's only a friendly convenience.
-        (function(){
-            function tryInitPuter() {
-                if (window.puter && puter.ai && typeof puter.ai.chat === 'function') {
-                    console.log('Puter.js loaded — ready to chat.');
-                    // You can optionally prime the model with a short system message by sending it once silently.
-                    // For example:
-                    // puter.ai.chat('You are Domba, a friendly cafe assistant for Wisdom Cafe. Answer briefly and politely.');
-                } else {
-                    // not ready yet — try again shortly
-                    setTimeout(tryInitPuter, 300);
-                }
-            }
-            tryInitPuter();
-        })();
-    </script>
+      try {
+        const response = await puter.ai.chat(msg, { model: "gpt-4o-mini" });
+        let text = typeof response === "string" ? response : (response.output || JSON.stringify(response));
+        aiDiv.textContent = text;
+      } catch (err) {
+        aiDiv.textContent = "⚠️ Error: " + err.message;
+        console.error(err);
+      }
+    }
+  </script>
 </body>
 </html>
