@@ -1,132 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeWisdom Cafe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Open Sans', sans-serif;
-      background-color: #333;
-      background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-    }
-    .container { width: 100%; padding: 20px; display: flex; justify-content: center; }
-    .glassmorphism-card {
-      background: rgba(255,255,255,0.08);
-      border-radius: 20px;
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      padding: 25px;
-      max-width: 900px;
-      width: 90%;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .card-header { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1em; }
-    .card-content { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 30px; align-items: center; }
-    .content-image { max-width: 100%; border-radius: 10px; }
-    .main-title { font-family: 'Montserrat', sans-serif; font-size: 3.5em; font-weight: 700; margin: 0; }
-    .subtitle { font-family: 'Montserrat', sans-serif; font-size: 1.2em; font-weight: 600; margin-bottom: 10px; }
-    .description-text { font-size: 0.9em; line-height: 1.6; color: rgba(255,255,255,0.8); }
-    .assistant-section {
-      margin-top: 20px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 15px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .chat-box { max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.15); padding: 12px; border-radius: 12px; font-size: 0.9em; display: flex; flex-direction: column; }
-    .chat-message { margin-bottom: 8px; padding: 8px 12px; border-radius: 10px; max-width: 80%; }
-    .chat-message.user { background: rgba(255,255,255,0.2); align-self: flex-end; color: #ffd27f; }
-    .chat-message.ai { background: rgba(255,255,255,0.1); align-self: flex-start; }
-    .chat-input-container { display: flex; gap: 8px; }
-    .chat-input-container input { flex: 1; padding: 10px; border-radius: 10px; border: none; background: rgba(255,255,255,0.2); color: white; }
-    .chat-input-container button { padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; background: rgba(255,255,255,0.2); color: white; font-weight: bold; }
-    .chat-input-container button:hover { background: rgba(255,255,255,0.35); }
-    .card-footer { display: flex; gap: 15px; margin-top: 10px; }
-    .footer-button { padding: 8px 18px; border-radius: 20px; font-size: 0.85em; text-decoration: none; }
-    .outline-button { border: 1px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); }
-    .filled-button { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeWisdom Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif; /* Default font for body text */
+            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+            -moz-osx-font-smoothing: grayscale; /* Smoother font rendering for Firefox */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            min-height: 100vh; /* Full viewport height */
+            background-color: #333; /* Fallback background color */
+            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
+            background-size: cover; /* Cover the entire background area */
+            background-position: center; /* Center the background image */
+            color: #fff; /* Default text color for the card */
+            position: relative; /* Added for positioning of overlay/menu */
+            overflow-x: hidden; /* Prevent horizontal scroll when menu is open */
+        }
+
+        .container {
+            width: 100%;
+            height: 100%; /* Changed to min-height to allow content to push it larger if needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Some padding around the card to prevent it from touching edges */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Glassmorphism Card Styling */
+        .glassmorphism-card {
+            background: rgba(255, 255, 255, 0.08); /* Semi-transparent white background */
+            border-radius: 20px; /* Rounded corners for the card */
+            backdrop-filter: blur(15px); /* The core glassmorphism blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific prefix for backdrop-filter */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border for depth */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); /* Soft shadow for elevated look */
+            padding: 25px; /* Inner padding of the card */
+            max-width: 900px; /* Maximum width for the card */
+            width: 90%; /* Responsive width, takes 90% of parent's width */
+            display: flex;
+            flex-direction: column; /* Arrange content in a column */
+            gap: 20px; /* Space between sections (header, main, footer) */
+            z-index: 1; /* Ensure card is above menu overlay */
+            position: relative; /* For z-index to work */
+        }
+
+        /* Header Styling */
+        .card-header {
+            display: flex;
+            align-items: center; /* Vertically align items */
+            gap: 20px; /* Space between menu icon and text */
+            padding-bottom: 15px; /* Padding below header */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+        }
+
+        .menu-toggle { /* Changed from .nav-link to .menu-toggle */
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Inherit color from parent */
+            display: flex; /* Allow menu icon and text to be side-by-side */
+            align-items: center;
+            gap: 20px;
+            cursor: pointer; /* Indicate it's clickable */
+            user-select: none; /* Prevent text selection on icon/text */
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Distribute lines evenly */
+            /* Removed cursor: pointer; as it's on .menu-toggle now */
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            border-radius: 1px;
+            transition: all 0.3s ease; /* Smooth transition for icon animation */
+        }
+
+        /* Animation for hamburger to 'X' */
+        .menu-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .menu-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+
+        .header-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            letter-spacing: 1px; /* Spaced out letters */
+            color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+            font-weight: 600;
+        }
+
+        /* Navigation Menu Styling */
+        .side-nav {
+            height: 100%;
+            width: 0; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 10; /* Sit on top of everything */
+            top: 0;
+            left: 0;
+            /* Changed background for blur effect */
+            background-color: rgba(255, 255, 255, 0.08); /* Semi-transparent white background, consistent with card */
+            backdrop-filter: blur(15px); /* Apply the blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari specific */
+            border-right: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+            padding-top: 60px; /* Place content 60px from the top */
+        }
+
+        .side-nav.open {
+            width: 250px; /* When open, set a specific width for larger screens */
+        }
+
+        .side-nav a {
+            padding: 15px 25px 15px 35px; /* Top, Right, Bottom, Left padding */
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #f1f1f1; /* Changed to a lighter color for visibility on blurry background */
+            display: block; /* Make links appear below each other */
+            transition: 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .side-nav a:hover {
+            color: #fff; /* White on hover */
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly more opaque on hover */
+        }
+
+        .side-nav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Overlay for when menu is open */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+            z-index: 5; /* Below the menu, above the card */
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .overlay.active {
+            display: block; /* Show when active */
+            opacity: 1;
+        }
+
+        /* Main Content Styling (using Grid for layout) */
+        .card-content {
+            display: grid;
+            grid-template-columns: 0.7fr 1.3fr; /* Two columns with fractional widths */
+            gap: 30px; /* Space between grid columns */
+            align-items: center; /* Vertically align content in grid cells */
+        }
+
+        .left-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.1); /* Slight dark background behind image */
+            border-radius: 15px; /* Match card radius for inner elements */
+            overflow: hidden; /* Important for border-radius on image */
+            padding: 10px; /* Padding inside the image container */
+        }
+
+        .content-image {
+            max-width: 100%; /* Ensure image fits its container */
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Remove extra space below image */
+            border-radius: 10px; /* Slightly rounded corners for the image itself */
+        }
+
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between title and description */
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5em; /* Large, bold title */
+            font-weight: 700;
+            line-height: 1.1; /* Tighter line spacing for multi-line title */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle text shadow */
+            margin: 0; /* Remove default margin from h1 */
+            color: white;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px; /* Space below subtitle */
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .description-text {
+            font-size: 0.9em;
+            line-height: 1.6; /* Comfortable line spacing for readability */
+            color: rgba(255, 255, 255, 0.7); /* Slightly transparent text */
+        }
+
+        /* Footer Styling */
+        .card-footer {
+            display: flex;
+            align-items: center; /* Vertically align items */
+            gap: 15px; /* Space between footer elements */
+            padding-top: 15px; /* Padding above footer */
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+        }
+
+        .footer-text {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.6);
+            flex-shrink: 0; /* Prevent text from shrinking on smaller screens */
+        }
+
+        .footer-button {
+            padding: 8px 18px;
+            border-radius: 20px; /* Pill shape for buttons */
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85em;
+            cursor: pointer; /* Indicate it's clickable */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transitions on hover */
+            white-space: nowrap; /* Prevent button text from wrapping */
+            text-decoration: none; /* Remove underline for links styled as buttons */
+            display: inline-block; /* Allow padding and sizing for links */
+        }
+
+        .outline-button {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .outline-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .filled-button {
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly more opaque background */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .filled-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .card-content {
+                grid-template-columns: 1fr; /* Stack columns on smaller screens */
+                text-align: center; /* Center text when stacked */
+            }
+
+            .left-section {
+                padding: 5px; /* Reduce padding for image container */
+            }
+
+            .main-title {
+                font-size: 2.5em; /* Adjust font size for smaller screens */
+            }
+
+            .footer-text {
+                display: none; /* Hide 'Connect with nature' on small screens if space is tight */
+            }
+
+            .card-footer {
+                justify-content: center; /* Center buttons if text is hidden */
+            }
+
+            /* Mobile-specific adjustments for side navigation */
+            .side-nav.open {
+                width: 70%; /* Open to 70% width on mobile, instead of 100% */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glassmorphism-card {
+                padding: 15px; /* Reduce overall card padding */
+            }
+
+            .card-header {
+                gap: 10px;
+                align-items: flex-start; /* Align header items to the start */
+            }
+            
+            .menu-toggle {
+                flex-direction: row; /* Keep menu icon and text in a row within the link */
+                align-items: center;
+                gap: 10px;
+            }
+
+            .footer-button {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .side-nav.open {
+                width: 75%; /* Slightly more width for very small screens */
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="glassmorphism-card">
-      <header class="card-header">WELCOME TO DeWISDOM CAFE</header>
-      <main class="card-content">
-        <div>
-          <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Wisdom Cafe Logo" class="content-image">
-        </div>
-        <div>
-          <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
-          <h2 class="subtitle">Wisdom Cafe is more than just a coffee</h2>
-          <p class="description-text">Each cup is brewed not just for taste, but to stir the senses and awaken gentle reflection. Here, time slows down, and conversations flow like poetry, rich with meaning and warmth. Whether you're nestled by the window with a book, lost in thought with a latte, or exchanging quiet laughter under the soft glow of lanterns, Wisdom Cafe invites you to pause, breathe, and reconnect with yourself.</p>
-        </div>
-      </main>
-      <section class="assistant-section">
-        <h3 class="subtitle">Tanya Domba Wisdom Cafe Assistant 🐑☕</h3>
-        <div id="chat-box" class="chat-box">
-          <div class="chat-message ai">Hai, saya Asisten Wisdom Cafe. Tanya tentang menu, kopi, atau reservasi ✨</div>
-        </div>
-        <div class="chat-input-container">
-          <input type="text" id="user-input" placeholder="Tulis pesan Anda...">
-          <button id="send-button">Send</button>
-        </div>
-      </section>
-      <footer class="card-footer">
-        <a href="Menu.html" class="footer-button outline-button">Lihat Menu</a>
-        <a href="https://www.instagram.com/wisatadombagarut" class="footer-button filled-button">Gallery</a>
-      </footer>
+    <div id="menuOverlay" class="overlay"></div>
+
+    <div id="mySidenav" class="side-nav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="Menu.html">Lihat Menu</a>
+        <a href="https://www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==">Gallery</a>
+        <a href="#">About Us</a>
+        <a href="https://wa.me/6283143087159">Contact</a>
     </div>
-  </div>
 
-  <script src="https://js.puter.com/v2/"></script>
-  <script>
-    document.getElementById("send-button").addEventListener("click", sendMessage);
-    document.getElementById("user-input").addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
+    <div class="container">
+        <div class="glassmorphism-card">
+            <header class="card-header">
+                <div class="menu-toggle" onclick="toggleNav()">
+                    <div class="menu-icon" id="menuIcon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="header-text">WELCOME TO DeWisdom CAFE</div>
+                </div>
+            </header>
 
-    async function sendMessage() {
-      const input = document.getElementById("user-input");
-      const chatBox = document.getElementById("chat-box");
-      const msg = input.value.trim();
-      if (!msg) return;
+            <main class="card-content">
+                <div class="left-section">
+                    <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Green Plant" class="content-image">
+                </div>
+                <div class="right-section">
+                    <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
+                    <div class="description-section">
+                        <h2 class="subtitle">Wisdom Cafe is more than just a coffee</h2>
+                        <p class="description-text">Each cup is brewed not just for taste, but to stir the senses and awaken gentle reflection. Here, time slows down, and conversations flow like poetry, rich with meaning and warmth. Whether you're nestled by the window with a book, lost in thought with a latte, or exchanging quiet laughter under the soft glow of lanterns, Wisdom Cafe invites you to pause, breathe, and reconnect with yourself.</p>
+                    </div>
+                </div>
+            </main>
 
-      const userDiv = document.createElement("div");
-      userDiv.className = "chat-message user";
-      userDiv.textContent = msg;
-      chatBox.appendChild(userDiv);
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+            <footer class="card-footer">
+                <div class="footer-text">Connect with nature</div>
+                <a href="Menu.html" class="footer-button outline-button">Lihat Menu</a>
+                <a href="www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==" class="footer-button filled-button">Gallery</a>
+            </footer>
+        </div>
+    </div>
 
-      const aiDiv = document.createElement("div");
-      aiDiv.className = "chat-message ai";
-      aiDiv.textContent = "...";
-      chatBox.appendChild(aiDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    <script>
+        function toggleNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var overlay = document.getElementById("menuOverlay");
+            var menuIcon = document.getElementById("menuIcon");
 
-      try {
-        const response = await puter.ai.chat(msg, { model: "gpt-4o-mini" });
-        let text = typeof response === "string" ? response : (response.output || JSON.stringify(response));
-        aiDiv.textContent = text;
-      } catch (err) {
-        aiDiv.textContent = "⚠️ Error: " + err.message;
-        console.error(err);
-      }
-    }
-  </script>
+            if (sidenav.classList.contains("open")) {
+                sidenav.classList.remove("open");
+                overlay.classList.remove("active");
+                menuIcon.classList.remove("open"); // Reset hamburger icon
+            } else {
+                sidenav.classList.add("open");
+                overlay.classList.add("active");
+                menuIcon.classList.add("open"); // Animate hamburger to 'X'
+            }
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").classList.remove("open");
+            document.getElementById("menuOverlay").classList.remove("active");
+            document.getElementById("menuIcon").classList.remove("open"); // Reset hamburger icon
+        }
+
+        // Close nav when clicking outside on the overlay
+        document.getElementById("menuOverlay").onclick = function() {
+            closeNav();
+        };
+
+    </script>
 </body>
 </html>
