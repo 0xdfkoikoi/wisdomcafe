@@ -4,7 +4,7 @@
 
 const CONFIG = {
     // Gemini API Configuration
-    GEMINI_API_KEY: '', // Replace with your actual API key
+    GEMINI_API_KEY: 'AIzaSyD92JcqH_EFgeRFQ5NJkYc29ChxBIfVP7I', // Replace with your actual API key
     
     // Cafe Information
     CAFE_NAME: 'Wisdom Cafe',
