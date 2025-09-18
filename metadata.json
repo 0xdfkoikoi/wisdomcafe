@@ -1,0 +1,6 @@
+{
+  "name": "Wisdom Cafe - AI-Powered Website",
+  "description": "A beautiful, modern website for Wisdom Cafe featuring an AI-powered chat assistant powered by Google's Gemini AI. Experience nature-inspired coffee and food in a serene atmosphere.",
+  "requestFramePermissions": [],
+  "prompt": "Welcome to Wisdom Cafe! Ask me about our menu, coffee specialties, or make a reservation."
+}
