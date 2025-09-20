@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wisdom Cafe</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>DeWisdom Cafe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+
     <style>
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
             background-color: #333;
-            background-image: url('https://placehold.co/1920x1080/000000/cccccc?text=Wisdom+Cafe+Background');
+            background-image: url('https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/BG1.jpg');
             background-size: cover;
             background-position: center;
             color: #fff;
             position: relative;
             overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
 
         .container {
@@ -34,6 +34,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
             box-sizing: border-box;
         }
 
@@ -62,12 +63,113 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .menu-toggle {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .menu-icon {
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .menu-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
         .header-text {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.9em;
             letter-spacing: 1px;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 600;
+        }
+
+        .side-nav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+    .side-nav.open {
+            width: 250px;
+        }
+
+        .side-nav a {
+            padding: 15px 25px 15px 35px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .side-nav a:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .side-nav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 5;
+            display: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
         }
 
         .card-content {
@@ -185,7 +287,7 @@
         }
 
         .chat-box {
-            height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             background: rgba(0, 0, 0, 0.15);
             padding: 12px;
@@ -247,37 +349,6 @@
             background-color: rgba(255, 255, 255, 0.35);
         }
 
-        /* Message Box for Alerts */
-        .message-box-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-        .message-box-card {
-            background-color: #333;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            max-width: 300px;
-        }
-        .message-box-card button {
-            margin-top: 15px;
-            padding: 8px 20px;
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
         @media (max-width: 768px) {
             .card-content {
                 grid-template-columns: 1fr;
@@ -299,19 +370,67 @@
             .card-footer {
                 justify-content: center;
             }
+
+            .side-nav.open {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glassmorphism-card {
+                padding: 15px;
+            }
+
+            .card-header {
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .menu-toggle {
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .footer-button {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .side-nav.open {
+                width: 75%;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="menuOverlay" class="overlay"></div>
+
+    <div id="mySidenav" class="side-nav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="Menu.html">Lihat Menu</a>
+        <a href="https://www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==">Gallery</a>
+        <a href="#">About Us</a>
+        <a href="https://wa.me/6283143087159">Contact</a>
+    </div>
+
     <div class="container">
         <div class="glassmorphism-card">
             <header class="card-header">
-                <div class="header-text">WELCOME TO WISDOM CAFE</div>
+                <div class="menu-toggle" onclick="toggleNav()">
+                    <div class="menu-icon" id="menuIcon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="header-text">WELCOME TO DeWISDOM CAFE</div>
+                </div>
             </header>
 
             <main class="card-content">
                 <div class="left-section">
-                    <img src="https://placehold.co/400x400/333333/ffffff?text=Wisdom+Cafe+Logo" alt="Wisdom Cafe Logo" class="content-image">
+                    <img src="https://raw.githubusercontent.com/0xdfkoikoi/wisdomcafe/refs/heads/main/img/pngwisdom.png" alt="Green Plant" class="content-image">
                 </div>
                 <div class="right-section">
                     <h2 class="main-title">Nature<br>Coffee<br>and Food</h2>
@@ -324,142 +443,154 @@
 
             <!-- Cafe Assistant Section -->
             <section class="assistant-section">
-                <h3 class="subtitle">Ask the AI Assistant ☕</h3>
+                <h3 class="subtitle">Tanya Domba Wisdom Cafe Assistant 🐑☕</h3>
                 <div id="chat-box" class="chat-box">
-                    <div class="chat-message ai">Hello, I'm the Wisdom Cafe AI Assistant. Ask me anything about our menu, coffee, or anything else!</div>
+                    <div class="chat-message ai">Hai, saya Asisten Wisdom Cafe. Tanya saja tentang menu, kopi, atau reservasi ✨</div>
                 </div>
                 <div class="chat-input-container">
-                    <input type="text" id="user-input" placeholder="Type your message..." />
+                    <input type="text" id="user-input" placeholder="Tulis pesan Anda..." />
                     <button id="send-button">Send</button>
                 </div>
             </section>
 
             <footer class="card-footer">
                 <div class="footer-text">Connect with nature</div>
-                <a href="https://placehold.co/400x200/333333/ffffff?text=View+Our+Menu" class="footer-button outline-button">View Our Menu</a>
-                <a href="https://www.instagram.com/wisatadombagarut" class="footer-button filled-button">Gallery</a>
+                <a href="Menu.html" class="footer-button outline-button">Lihat Menu</a>
+                <a href="www.instagram.com/wisatadombagarut?igsh=MTMxZmRqNjQ4amRuNw==" class="footer-button filled-button">Gallery</a>
             </footer>
         </div>
     </div>
+
+    <!-- Configuration -->
+    <script src="config.js"></script>
     
-    <!-- Message Box for Alerts -->
-    <div id="messageBoxOverlay" class="message-box-overlay">
-        <div class="message-box-card">
-            <p id="messageBoxText"></p>
-            <button id="messageBoxClose">OK</button>
-        </div>
-    </div>
-
-    <script>
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-        const systemPrompt = "You are an AI assistant for a cafe named Wisdom Cafe. Your tone is calm and wise. You can answer questions about coffee, food, and provide general life advice in a tranquil and thoughtful manner. Do not mention that you are an AI model.";
-
-        const chatBox = document.getElementById("chat-box");
-        const userInput = document.getElementById("user-input");
-        const sendButton = document.getElementById("send-button");
-        const messageBoxOverlay = document.getElementById("messageBoxOverlay");
-        const messageBoxText = document.getElementById("messageBoxText");
-        const messageBoxClose = document.getElementById("messageBoxClose");
-
-        let chatHistory = [];
-        let isTyping = false;
-
-        function showMessageBox(message) {
-            messageBoxText.textContent = message;
-            messageBoxOverlay.style.display = 'flex';
+    <!-- Gemini JS SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
         }
+    </script>
 
-        messageBoxClose.addEventListener('click', () => {
-            messageBoxOverlay.style.display = 'none';
-        });
+    <script type="module">
+        import { GoogleGenerativeAI } from '@google/generative-ai';
 
-        // Function to create and append a new message element
-        function appendMessage(role, text) {
-            const messageDiv = document.createElement("div");
-            messageDiv.className = `chat-message ${role}`;
-            messageDiv.textContent = text;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        // Initialize Gemini AI with API key from config
+        const genAI = new GoogleGenerativeAI(CONFIG.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        // Add a "typing" indicator
-        function showTypingIndicator() {
-            isTyping = true;
-            appendMessage('ai', "...");
-            chatBox.lastChild.id = "typing-indicator";
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        // Use system prompt from config
+        const systemPrompt = CONFIG.SYSTEM_PROMPT;
 
-        // Remove the "typing" indicator
-        function hideTypingIndicator() {
-            isTyping = false;
-            const indicator = document.getElementById("typing-indicator");
-            if (indicator) {
-                indicator.remove();
+        function toggleNav() {
+            var sidenav = document.getElementById("mySidenav");
+            var overlay = document.getElementById("menuOverlay");
+            var menuIcon = document.getElementById("menuIcon");
+
+            if (sidenav.classList.contains("open")) {
+                sidenav.classList.remove("open");
+                overlay.classList.remove("active");
+                menuIcon.classList.remove("open"); // Reset hamburger icon
+            } else {
+                sidenav.classList.add("open");
+                overlay.classList.add("active");
+                menuIcon.classList.add("open"); // Animate hamburger to 'X'
             }
         }
 
+        function closeNav() {
+            document.getElementById("mySidenav").classList.remove("open");
+            document.getElementById("menuOverlay").classList.remove("active");
+            document.getElementById("menuIcon").classList.remove("open"); // Reset hamburger icon
+        }
+
+        // Close nav when clicking outside on the overlay
+        document.getElementById("menuOverlay").onclick = function() {
+            closeNav();
+        };
+
+        // Attach event listeners after the DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendButton = document.getElementById("send-button");
+            const userInput = document.getElementById("user-input");
+            
+            if (sendButton) {
+                sendButton.addEventListener('click', sendMessage);
+            }
+
+            if (userInput) {
+                userInput.addEventListener("keypress", (event) => {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        sendMessage();
+                    }
+                });
+            }
+        });
+
         async function sendMessage() {
-            if (isTyping) return;
+            const userInput = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
             const userMessage = userInput.value.trim();
+
             if (!userMessage) return;
 
             // Show user message
-            appendMessage("user", userMessage);
-            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+            const userDiv = document.createElement("div");
+            userDiv.className = "chat-message user";
+            userDiv.textContent = userMessage;
+            chatBox.appendChild(userDiv);
+
             userInput.value = "";
-            showTypingIndicator();
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Show loading placeholder
+            const loadingDiv = document.createElement("div");
+            loadingDiv.className = "chat-message ai";
+            loadingDiv.textContent = "Domba sedang memikirkan jawaban...";
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                const payload = {
-                    contents: chatHistory,
-                    tools: [{ "google_search": {} }],
-                    systemInstruction: {
-                        parts: [{ text: systemPrompt }]
-                    }
-                };
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                const aiResponseText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                // Use Gemini AI to generate response
+                const prompt = `${systemPrompt}\n\nPertanyaan pelanggan: ${userMessage}`;
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const aiResponse = response.text();
 
-                hideTypingIndicator();
-
-                if (aiResponseText) {
-                    appendMessage("ai", aiResponseText);
-                    chatHistory.push({ role: "model", parts: [{ text: aiResponseText }] });
-                } else {
-                    showMessageBox('The AI did not provide a response. Please try again.');
-                }
+                // Update the loading message with AI response
+                loadingDiv.textContent = aiResponse;
+                chatBox.scrollTop = chatBox.scrollHeight;
             } catch (error) {
                 console.error('Error calling Gemini API:', error);
-                hideTypingIndicator();
-                showMessageBox('An error occurred. Please try again later.');
+                
+                // Fallback to hardcoded responses if API fails
+                const responses = {
+                    "menu": "Tentu! Kami menawarkan berbagai jenis kopi, teh, dan makanan ringan. Spesial kami adalah kopi Domba Arabika, yang berasal dari perkebunan lokal.",
+                    "kopi": "Kopi andalan kami adalah Domba Arabika, dengan cita rasa unik dan aroma yang kuat. Kami juga punya Latte, Cappuccino, dan Espresso.",
+                    "reservasi": "Untuk reservasi, silakan hubungi kami melalui WhatsApp di nomor 083143087159. Kami akan dengan senang hati membantu Anda.",
+                    "jam operasional": "Kami buka setiap hari dari pukul 09:00 pagi hingga 21:00 malam. Kami tunggu kedatangan Anda!",
+                    "lainnya": "Maaf, saya hanya bisa membantu pertanyaan terkait menu, kopi, atau reservasi kafe."
+                };
+
+                const lowerCaseMessage = userMessage.toLowerCase();
+                let fallbackResponse = responses["lainnya"];
+
+                if (lowerCaseMessage.includes("menu")) {
+                    fallbackResponse = responses["menu"];
+                } else if (lowerCaseMessage.includes("kopi")) {
+                    fallbackResponse = responses["kopi"];
+                } else if (lowerCaseMessage.includes("reservasi") || lowerCaseMessage.includes("pesan tempat")) {
+                    fallbackResponse = responses["reservasi"];
+                } else if (lowerCaseMessage.includes("jam")) {
+                    fallbackResponse = responses["jam operasional"];
+                }
+
+                loadingDiv.textContent = fallbackResponse;
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
-        
-        sendButton.addEventListener('click', sendMessage);
-        userInput.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
-
-        // Initial welcome message
-        document.addEventListener('DOMContentLoaded', () => {
-            appendMessage("ai", "Hello, I'm the Wisdom Cafe AI Assistant. How can I help you today?");
-        });
     </script>
 </body>
 </html>
