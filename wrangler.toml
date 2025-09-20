@@ -1,0 +1,6 @@
+name = "wisdom-cafe-worker"
+main = "worker.js"
+compatibility_date = "2025-09-20"
+
+[site]
+bucket = "."
