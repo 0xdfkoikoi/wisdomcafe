@@ -1,5 +1,5 @@
 name = "wisdom-cafe-worker"
-main = "worker.js"
+# main = "worker.js" # This line is not needed for static site deployment
 compatibility_date = "2025-09-20"
 
 [site]
