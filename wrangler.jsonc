@@ -1,5 +1,5 @@
 {
   "name": "floral-frost-90a0",
-  "pages_build_output_dir": "./dist",
-  "compatibility_date": "2025-09-20"
+  "compatibility_date": "2025-09-20",
+  "main": "dist/index.js"
 }
