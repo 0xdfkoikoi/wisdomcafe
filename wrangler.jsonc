@@ -1,6 +1,8 @@
 {
-    "name" : "floral-frost-90a0",
-    "compatibility_date" : "2025-09-20",
-    "directory" : {"./dist"
-    }
+  "name": "floral-frost-90a0",
+  "compatibility_date": "2025-09-20",
+  "main": "./dist/index.js",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
 }
