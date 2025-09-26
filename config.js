@@ -3,8 +3,8 @@
 // You can get your API key from: https://aistudio.google.com/app/apikey
 
 const CONFIG = {
-    // Gemini API Configuration
-    GEMINI_API_KEY: '', // Replace with your actual API key
+    // Backend endpoint for Cloudflare Worker (set your deployed URL)
+    WORKER_BASE_URL: 'https://<your-worker>.workers.dev',
     
     // Cafe Information
     CAFE_NAME: 'Wisdom Cafe',
