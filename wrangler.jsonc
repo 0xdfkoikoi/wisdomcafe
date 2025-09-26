@@ -1,5 +1,5 @@
 {
   "name": "domba",
   "compatibility_date": "2025-09-20",
-  "main": "dist/index.js"
+  "main": "src/index.js"
 }
