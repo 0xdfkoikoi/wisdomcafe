@@ -2,86 +2,64 @@ export default {
   async fetch(request, env) {
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
     };
 
+    const url = new URL(request.url);
+
+    // Handle preflight CORS
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
 
-    const url = new URL(request.url);
+    // Only accept POST /generate
     if (url.pathname !== "/generate" || request.method !== "POST") {
-      return new Response(JSON.stringify({ error: "Not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response("Not Found", { status: 404, headers: corsHeaders });
     }
 
     try {
-      const { prompt } = await request.json();
-      if (!prompt || typeof prompt !== "string") {
-        return new Response(JSON.stringify({ error: "Invalid prompt" }), {
+      const { prompt, model = "gemini-1.5-flash" } = await request.json();
+      if (!prompt) {
+        return new Response(JSON.stringify({ error: "Missing prompt" }), {
           status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: corsHeaders,
         });
       }
 
-      if (!env.GEMINI_API_KEY) {
-        return new Response(JSON.stringify({ error: "Missing GEMINI_API_KEY" }), {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
-      const geminiUrl =
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+      };
 
-      const geminiRes = await fetch(geminiUrl, {
+      const resp = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": env.GEMINI_API_KEY,
         },
-        body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt }],
-            },
-          ],
-        }),
+        body: JSON.stringify(payload),
       });
 
-      const raw = await geminiRes.json();
-
-      if (!geminiRes.ok) {
-        return new Response(
-          JSON.stringify({ error: "Gemini error", raw }),
-          {
-            status: geminiRes.status,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
+      const raw = await resp.json();
 
       let text = "";
-      try {
-        text = raw.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "";
-      } catch (_) {
-        text = "";
+      if (raw?.candidates?.length) {
+        text = raw.candidates
+          .map((c) => (c.content || []).map((p) => p.text || "").join(""))
+          .join("\n\n");
       }
 
       return new Response(JSON.stringify({ text, raw }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     } catch (err) {
-      return new Response(JSON.stringify({ error: "Bad request", details: String(err) }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      return new Response(JSON.stringify({ error: String(err) }), {
+        status: 500,
+        headers: corsHeaders,
       });
     }
   },
 };
-
-
