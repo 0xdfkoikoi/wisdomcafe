@@ -4,7 +4,7 @@
 
 const CONFIG = {
     // Backend endpoint for Cloudflare Worker (set your deployed URL)
-    WORKER_BASE_URL: 'https://<your-worker>.workers.dev',
+    WORKER_BASE_URL: 'https://domba.realganganadul.workers.dev',
     
     // Cafe Information
     CAFE_NAME: 'Wisdom Cafe',
