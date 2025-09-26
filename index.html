@@ -464,22 +464,7 @@
     <!-- Configuration -->
     <script src="config.js"></script>
     
-    <!-- Gemini JS SDK -->
-    <script type="importmap">
-        {
-            "imports": {
-                "@google/generative-ai": "https://esm.run/@google/generative-ai"
-            }
-        }
-    </script>
-
-    <script type="module">
-        import { GoogleGenerativeAI } from '@google/generative-ai';
-
-        // Initialize Gemini AI with API key from config
-        const genAI = new GoogleGenerativeAI(CONFIG.GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    <script>
         // Use system prompt from config
         const systemPrompt = CONFIG.SYSTEM_PROMPT;
 
@@ -553,14 +538,18 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // Use Gemini AI to generate response
                 const prompt = `${systemPrompt}\n\nPertanyaan pelanggan: ${userMessage}`;
-                const result = await model.generateContent(prompt);
-                const response = await result.response;
-                const aiResponse = response.text();
-
-                // Update the loading message with AI response
-                loadingDiv.textContent = aiResponse;
+                const res = await fetch(`${CONFIG.WORKER_BASE_URL}/generate`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt })
+                });
+                const json = await res.json();
+                if (!res.ok) {
+                    throw new Error(json?.error || "Request failed");
+                }
+                const aiResponse = json.text || "";
+                loadingDiv.textContent = aiResponse || "(no response)";
                 chatBox.scrollTop = chatBox.scrollHeight;
             } catch (error) {
                 console.error('Error calling Gemini API:', error);
