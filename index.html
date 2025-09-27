@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
 
     <style>
+        /* Base styles remain the same for aesthetics */
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
@@ -445,7 +446,7 @@
             <section class="assistant-section">
                 <h3 class="subtitle">Tanya Domba AI Wisdom Cafe Assistant 🐑☕</h3>
                 <div id="chat-box" class="chat-box">
-                    <div class="chat-message ai">Maaf untuk Domba AI masih dalam tahap pengembangan, belum dapat digunakan</div>
+                    <!-- Removed static "under development" message. A welcome message is now added via JavaScript on load. -->
                 </div>
                 <div class="chat-input-container">
                     <input type="text" id="user-input" placeholder="Tulis pesan Anda..." />
@@ -462,11 +463,12 @@
     </div>
 
     <!-- Configuration -->
+    <!-- Assuming config.js provides CONFIG.WORKER_BASE_URL and CONFIG.SYSTEM_PROMPT -->
     <script src="config.js"></script>
     
     <script>
         // Use system prompt from config
-        const systemPrompt = CONFIG.SYSTEM_PROMPT;
+        const systemPrompt = typeof CONFIG !== 'undefined' ? CONFIG.SYSTEM_PROMPT : "You are a friendly cafe assistant.";
 
         function toggleNav() {
             var sidenav = document.getElementById("mySidenav");
@@ -495,11 +497,24 @@
             closeNav();
         };
 
-        // Attach event listeners after the DOM is ready
+        function addMessage(message, sender, chatBox) {
+            const div = document.createElement("div");
+            div.className = `chat-message ${sender}`;
+            div.textContent = message;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return div;
+        }
+
+        // Attach event listeners and add welcome message
         document.addEventListener('DOMContentLoaded', () => {
             const sendButton = document.getElementById("send-button");
             const userInput = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
             
+            // Initial Welcome Message
+            addMessage("Hello! I'm Domba AI. I can help you with questions about our menu, coffee, or making reservations. How can I assist you today?", "ai", chatBox);
+
             if (sendButton) {
                 sendButton.addEventListener('click', sendMessage);
             }
@@ -522,58 +537,64 @@
             if (!userMessage) return;
 
             // Show user message
-            const userDiv = document.createElement("div");
-            userDiv.className = "chat-message user";
-            userDiv.textContent = userMessage;
-            chatBox.appendChild(userDiv);
+            addMessage(userMessage, "user", chatBox);
 
             userInput.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
+            
             // Show loading placeholder
-            const loadingDiv = document.createElement("div");
-            loadingDiv.className = "chat-message ai";
-            loadingDiv.textContent = "Domba sedang memikirkan jawaban...";
-            chatBox.appendChild(loadingDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            const loadingDiv = addMessage("Domba is thinking...", "ai", chatBox);
 
             try {
+                // Ensure CONFIG and WORKER_BASE_URL are defined before fetching
+                if (typeof CONFIG === 'undefined' || !CONFIG.WORKER_BASE_URL) {
+                     throw new Error("Configuration error: WORKER_BASE_URL is not set in config.js.");
+                }
+
                 const prompt = `${systemPrompt}\n\nPertanyaan pelanggan: ${userMessage}`;
+                
+                // Fetch call to your Cloudflare Worker
                 const res = await fetch(`${CONFIG.WORKER_BASE_URL}/generate`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ prompt })
                 });
+
                 const json = await res.json();
+
                 if (!res.ok) {
-                    throw new Error(json?.error || "Request failed");
+                    throw new Error(json?.error || `API Request failed with status ${res.status}.`);
                 }
-                const aiResponse = json.text || "";
-                loadingDiv.textContent = aiResponse || "(no response)";
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } catch (error) {
-                console.error('Error calling Gemini API:', error);
                 
-                // Fallback to hardcoded responses if API fails
+                const aiResponse = json.text || "";
+                
+                // If the response text is empty, show a specific message
+                loadingDiv.textContent = aiResponse || "I received a response from the Worker, but the content was empty. (Please check Worker log.)";
+                
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            } catch (error) {
+                console.error('Error calling Worker API:', error);
+                
+                // Fallback to hardcoded responses in English if API call fails
                 const responses = {
-                    "menu": "Tentu! Kami menawarkan berbagai jenis kopi, teh, dan makanan ringan. Spesial kami adalah kopi Domba Arabika, yang berasal dari perkebunan lokal.",
-                    "kopi": "Kopi andalan kami adalah Domba Arabika, dengan cita rasa unik dan aroma yang kuat. Kami juga punya Latte, Cappuccino, dan Espresso.",
-                    "reservasi": "Untuk reservasi, silakan hubungi kami melalui WhatsApp di nomor 083143087159. Kami akan dengan senang hati membantu Anda.",
-                    "jam operasional": "Kami buka setiap hari dari pukul 09:00 pagi hingga 21:00 malam. Kami tunggu kedatangan Anda!",
-                    "lainnya": "Maaf, saya hanya bisa membantu pertanyaan terkait menu, kopi, atau reservasi kafe."
+                    "menu": "Sure! We offer various coffees, teas, and snacks. Our specialty is Domba Arabika coffee, sourced from local plantations.",
+                    "kopi": "Our flagship coffee is Domba Arabika, with a unique flavor and strong aroma. We also have Latte, Cappuccino, and Espresso.",
+                    "reservasi": "For reservations, please contact us via WhatsApp at +6283143087159. We will be happy to assist you.",
+                    "hours": "We are open daily from 9:00 AM to 9:00 PM. We look forward to your visit!",
+                    "default": `[API Error: ${error.message}]. I apologize! I can't connect to the AI service right now, but I can still answer basic questions.`
                 };
 
                 const lowerCaseMessage = userMessage.toLowerCase();
-                let fallbackResponse = responses["lainnya"];
+                let fallbackResponse = responses["default"];
 
                 if (lowerCaseMessage.includes("menu")) {
                     fallbackResponse = responses["menu"];
-                } else if (lowerCaseMessage.includes("kopi")) {
+                } else if (lowerCaseMessage.includes("coffee") || lowerCaseMessage.includes("kopi")) {
                     fallbackResponse = responses["kopi"];
-                } else if (lowerCaseMessage.includes("reservasi") || lowerCaseMessage.includes("pesan tempat")) {
+                } else if (lowerCaseMessage.includes("reservation") || lowerCaseMessage.includes("reservasi")) {
                     fallbackResponse = responses["reservasi"];
-                } else if (lowerCaseMessage.includes("jam")) {
-                    fallbackResponse = responses["jam operasional"];
+                } else if (lowerCaseMessage.includes("hours") || lowerCaseMessage.includes("jam")) {
+                    fallbackResponse = responses["hours"];
                 }
 
                 loadingDiv.textContent = fallbackResponse;
